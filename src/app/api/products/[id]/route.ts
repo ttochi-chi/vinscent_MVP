@@ -1,17 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { 
-  getProductById, 
-  updateProduct, 
+  getProductById,
+  updateProduct,
   deleteProduct 
 } from '../../../../lib/db/operations/products';
 
-// GET: 특정 제품 조회
+// GET: 특정 제품 조회 (이미지 포함)
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const { id } = await params;
+    console.log('Product GET by ID 요청 받음, ID:', id);
+    
     const productId = parseInt(id);
     
     if (isNaN(productId)) {
@@ -27,16 +29,18 @@ export async function GET(
       return NextResponse.json({
         success: true,
         product: result.data,
+        mainImage: result.data.mainImageUrl ? 'included' : 'none',
+        imageCount: result.data.images?.length || 0,
         timestamp: new Date().toISOString(),
       });
     } else {
       return NextResponse.json(
         { success: false, error: result.error || 'Product not found' },
-        { status: 404 }
+        { status: result.error === 'Product not found' ? 404 : 500 }
       );
     }
   } catch (error) {
-    console.error('Product GET [id] API error:', error);
+    console.error('Product GET by ID API error:', error);
     return NextResponse.json(
       { success: false, error: 'Internal server error' },
       { status: 500 }
@@ -44,13 +48,16 @@ export async function GET(
   }
 }
 
-// PUT: 제품 수정
+// PUT: 제품 수정 (메인 이미지 + 설명 이미지들)
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const { id } = await params;
+    const body = await request.json();
+    console.log('Product PUT 요청 받음, ID:', id, 'Body:', body);
+    
     const productId = parseInt(id);
     
     if (isNaN(productId)) {
@@ -60,17 +67,18 @@ export async function PUT(
       );
     }
 
-    const body = await request.json();
+    //업데이트 데이터 구조화
+    const updateData: any = {};
     
-    const updateData = {
-      title: body.title,
-      description: body.description,
-      topNote: body.topNote,
-      middleNote: body.middleNote,
-      baseNote: body.baseNote,
-      price: body.price ? parseInt(body.price) : undefined,
-      brandId: body.brandId ? parseInt(body.brandId) : undefined,
-    };
+    if (body.title !== undefined) updateData.title = body.title;
+    if (body.description !== undefined) updateData.description = body.description;
+    if (body.topNote !== undefined) updateData.topNote = body.topNote;
+    if (body.middleNote !== undefined) updateData.middleNote = body.middleNote;
+    if (body.baseNote !== undefined) updateData.baseNote = body.baseNote;
+    if (body.price !== undefined) updateData.price = parseInt(body.price);
+    if (body.mainImageUrl !== undefined) updateData.mainImageUrl = body.mainImageUrl;
+    if (body.brandId !== undefined) updateData.brandId = parseInt(body.brandId);
+    if (body.images !== undefined) updateData.images = body.images;
 
     const result = await updateProduct(productId, updateData);
     
@@ -79,6 +87,8 @@ export async function PUT(
         success: true,
         message: 'Product updated successfully',
         product: result.data,
+        mainImage: result.data.mainImageUrl ? 'updated' : 'none',
+        imageCount: result.data.images?.length || 0,
         timestamp: new Date().toISOString(),
       });
     } else {
@@ -96,14 +106,14 @@ export async function PUT(
   }
 }
 
-// DELETE: 제품 삭제
+// DELETE: 제품 삭제 (이미지도 함께 삭제)
 export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const { id } = await params;
-    console.log('DELETE Product 요청 받음, ID:', id);
+    console.log('Product DELETE 요청 받음, ID:', id);
     
     const productId = parseInt(id);
     
@@ -119,7 +129,7 @@ export async function DELETE(
     if (result.success && result.data) {
       return NextResponse.json({
         success: true,
-        message: 'Product deleted successfully',
+        message: 'Product and all related images deleted successfully',
         deletedId: productId,
         timestamp: new Date().toISOString(),
       });

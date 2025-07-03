@@ -20,7 +20,18 @@ export const products = mysqlTable('product', {
   middleNote: varchar('middle_note', { length: 100 }),
   baseNote: varchar('base_note', { length: 100 }),
   price: int('product_price').notNull(),
+  mainImageUrl: varchar('main_image_url', { length: 255 }),
   brandId: bigint('brand_id', { mode: 'number' }).notNull(),
+  createdDate: timestamp('created_date').defaultNow().notNull(),
+  updatedDate: timestamp('updated_date').defaultNow().onUpdateNow().notNull(),
+});
+
+export const productImages = mysqlTable('product_image', {
+  id: bigint('image_id', { mode: 'number' }).primaryKey().autoincrement(),
+  imageUrl: varchar('image_url', { length: 255 }).notNull(),
+  imageOrder: int('image_order').notNull(),
+  description: varchar('image_description', { length: 200 }),
+  productId: bigint('product_id', { mode: 'number' }).notNull(),
   createdDate: timestamp('created_date').defaultNow().notNull(),
   updatedDate: timestamp('updated_date').defaultNow().onUpdateNow().notNull(),
 });
@@ -50,10 +61,18 @@ export const brandsRelations = relations(brands, ({ many }) => ({
   magazines: many(magazines),
 }));
 
-export const productsRelations = relations(products, ({ one }) => ({
+export const productsRelations = relations(products, ({ one, many }) => ({
   brand: one(brands, {
     fields: [products.brandId],
     references: [brands.id],
+  }),
+  images: many(productImages),
+}));
+
+export const productImagesRelations = relations(productImages, ({ one }) => ({
+  product: one(products, {
+    fields: [productImages.productId],
+    references: [products.id],
   }),
 }));
 
