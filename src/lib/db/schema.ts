@@ -6,7 +6,7 @@ export const brands = mysqlTable('brand', {
   id: bigint('brand_id', { mode: 'number' }).primaryKey().autoincrement(),
   title: varchar('brand_title', { length: 100 }).notNull(),
   description: varchar('brand_description', { length: 500 }),
-  profilePhotoUrl: varchar('brand_profile_photo_url', { length: 255 }),
+  profileImageUrl: varchar('brand_profile_image_url', { length: 255 }),
   createdDate: timestamp('created_date').defaultNow().notNull(),
   updatedDate: timestamp('updated_date').defaultNow().onUpdateNow().notNull(),
 });
@@ -36,7 +36,7 @@ export const magazines = mysqlTable('magazine', {
 });
 
 // Magazine Photo 테이블
-export const magazinePhotos = mysqlTable('magazine_photo', {
+export const magazineImages = mysqlTable('magazine_image', {
   id: bigint('image_id', { mode: 'number' }).primaryKey().autoincrement(),
   imageUrl: varchar('image_url', { length: 255 }).notNull(),
   imageOrder: int('image_order').notNull(),
@@ -62,12 +62,12 @@ export const magazinesRelations = relations(magazines, ({ one, many }) => ({
     fields: [magazines.brandId],
     references: [brands.id],
   }),
-  photos: many(magazinePhotos),
+  photos: many(magazineImages),
 }));
 
-export const magazinePhotosRelations = relations(magazinePhotos, ({ one }) => ({
+export const magazineImagesRelations = relations(magazineImages, ({ one }) => ({
   magazine: one(magazines, {
-    fields: [magazinePhotos.magazineId],
+    fields: [magazineImages.magazineId],
     references: [magazines.id],
   }),
 }));

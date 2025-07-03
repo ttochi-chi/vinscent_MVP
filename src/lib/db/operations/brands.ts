@@ -6,13 +6,13 @@ import { eq } from 'drizzle-orm';
 export interface CreateBrandData {
     title : string;
     description?: string;
-    profilePhotoURL?: string;
+    profileImageURL?: string;
 }
 
 export interface UpdateBrandData {
     title?: string;
     description?: string;
-    profilePhotoUrl?: string;
+    profileImageUrl?: string;
 }
 
 //모든 브랜드 조회
@@ -57,7 +57,7 @@ export async function createBrand(brandData: CreateBrandData) {
         const result = await db.insert(brands).values({
             title: brandData.title.trim(),
             description: brandData.description?.trim() || null,
-            profilePhotoUrl: brandData.profilePhotoURL?.trim() || null,
+            profileImageUrl: brandData.profileImageURL?.trim() || null,
         });
 
         return {success: true, data: {id: result[0].insertId, ...brandData}};
@@ -83,7 +83,7 @@ export async function updateBrand(id: number, brandData: UpdateBrandData) {
         const updateData: any = {};
         if(brandData.title?.trim()) updateData.title = brandData.title.trim();
         if(brandData.description != undefined) updateData.description = brandData.description?.trim() || null;
-        if(brandData.profilePhotoUrl != undefined) updateData.profilePhotoUrl = brandData.profilePhotoUrl?.trim() || null;
+        if(brandData.profileImageUrl != undefined) updateData.profileImageUrl = brandData.profileImageUrl?.trim() || null;
 
         if(Object.keys(updateData).length === 0)
         {

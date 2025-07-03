@@ -1,5 +1,5 @@
 import { db } from '../index';
-import { magazines, magazinePhotos } from '../schema';
+import { magazines, magazineImages } from '../schema';
 import { eq } from 'drizzle-orm';
 
 // Magazine 타입 정의
@@ -48,8 +48,8 @@ export async function getAllMagazines()
         for(const magazine of magazineResult)
         {
             const images = await db.select()
-            .from(magazinePhotos)
-            .where(eq(magazinePhotos.magazineId, magazine.id));
+            .from(magazineImages)
+            .where(eq(magazineImages.magazineId, magazine.id));
 
             magazinesWithImages.push({
                 ...magazine,
@@ -83,8 +83,8 @@ export async function getMagazineById(id: number)
 
         //이미지 조회
         const images = await db.select()
-        .from(magazinePhotos)
-        .where(eq(magazinePhotos.magazineId, id));
+        .from(magazineImages)
+        .where(eq(magazineImages.magazineId, id));
 
         const magazineWithImages: MagazineWithImages = {
             ...magazineResult[0],
@@ -119,8 +119,8 @@ export async function getMagazinesByBrand(brandId: number)
         for(const magazine of magazineResult)
         {
             const images = await db.select()
-            .from(magazinePhotos)
-            .where(eq(magazinePhotos.magazineId, magazine.id));
+            .from(magazineImages)
+            .where(eq(magazineImages.magazineId, magazine.id));
 
             magazinesWithImages.push({
                 ...magazine,
@@ -164,7 +164,7 @@ export async function createMagazine(magazineData: CreateMagazineData) {
       for (let i = 0; i < magazineData.images.length; i++) {
         const imageUrl = magazineData.images[i];
         if (imageUrl.trim()) {
-          await db.insert(magazinePhotos).values({
+          await db.insert(magazineImages).values({
             imageUrl: imageUrl.trim(),
             imageOrder: i + 1,
             magazineId: Number(magazineId),
@@ -210,7 +210,7 @@ export async function updateMagazine(id: number, magazineData: UpdateMagazineDat
         if(magazineData.images !== undefined)
         {
             //기존 이미지 전체 삭제
-            await db.delete(magazinePhotos).where(eq(magazinePhotos.magazineId, id));
+            await db.delete(magazineImages).where(eq(magazineImages.magazineId, id));
 
             //새 이미지 등록
             if(magazineData.images.length > 0)
@@ -220,7 +220,7 @@ export async function updateMagazine(id: number, magazineData: UpdateMagazineDat
                     const imageUrl = magazineData.images[i];
                     if(imageUrl.trim())
                     {
-                        await db.insert(magazinePhotos).values({
+                        await db.insert(magazineImages).values({
                             imageUrl: imageUrl.trim(),
                             imageOrder: i + 1,
                             magazineId: id,
@@ -251,7 +251,7 @@ export async function deleteMagazine(id: number) {
     }
 
     // 관련 이미지들 먼저 삭제 (외래키 제약조건)
-    await db.delete(magazinePhotos).where(eq(magazinePhotos.magazineId, id));
+    await db.delete(magazineImages).where(eq(magazineImages.magazineId, id));
     
     // 매거진 삭제
     await db.delete(magazines).where(eq(magazines.id, id));
