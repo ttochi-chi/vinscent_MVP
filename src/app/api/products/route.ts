@@ -13,11 +13,13 @@ export async function GET(request: NextRequest) {
     const brandId = searchParams.get('brandId');
     const countOnly = searchParams.get('count');
 
+    console.log('Product GET 요청 받음:', { brandId, countOnly });
+
     // 개수만 조회하는 경우
     if (countOnly === 'true') {
       const result = await getProductCount();
       
-      if (result.success&& result.data) {
+      if (result.success && result.data) {
         return NextResponse.json({
           success: true,
           count: result.data.count,
@@ -42,7 +44,7 @@ export async function GET(request: NextRequest) {
 
       const result = await getProductsByBrand(brandIdNum);
       
-      if (result.success&& result.data) {
+      if (result.success && result.data) {
         return NextResponse.json({
           success: true,
           products: result.data,
@@ -52,13 +54,13 @@ export async function GET(request: NextRequest) {
         });
       } else {
         return NextResponse.json(
-          { success: false, error: result.error || 'Failed to get count' },
+          { success: false, error: result.error || 'Failed to get products' },
           { status: 500 }
         );
       }
     }
 
-    // 모든 제품 조회
+    // 모든 제품 조회 (이미지 포함)
     const result = await getAllProducts();
     
     if (result.success && result.data) {
@@ -83,10 +85,11 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST: 제품 등록
+// POST: 제품 생성 (메인 이미지 + 다중 설명 이미지 포함)
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log('Product POST 요청 받음:', body);
     
     // 기본 데이터 검증
     if (!body.title?.trim()) {
@@ -110,6 +113,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // 이미지 데이터 구조화
     const productData = {
       title: body.title,
       description: body.description || null,
@@ -117,7 +121,9 @@ export async function POST(request: NextRequest) {
       middleNote: body.middleNote || null,
       baseNote: body.baseNote || null,
       price: parseInt(body.price),
+      mainImageUrl: body.mainImageUrl || null,
       brandId: parseInt(body.brandId),
+      images: body.images || [], 
     };
 
     const result = await createProduct(productData);
@@ -127,6 +133,8 @@ export async function POST(request: NextRequest) {
         success: true,
         message: 'Product created successfully',
         product: result.data,
+        mainImage: result.data.mainImageUrl ? 'included' : 'none',
+        imageCount: result.data.images?.length || 0,
         timestamp: new Date().toISOString(),
       }, { status: 201 });
     } else {

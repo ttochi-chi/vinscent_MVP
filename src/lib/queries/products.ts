@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { CreateProductData, UpdateProductData } from '../db/operations/products'
 
-// API 호출 함수들
+// 🔧 Product API 클라이언트 함수들
 const productsApi = {
   // 모든 제품 조회
   getAll: async () => {
@@ -24,8 +23,25 @@ const productsApi = {
     return response.json()
   },
 
-  // 제품 등록
-  create: async (data: CreateProductData) => {
+  // 제품 개수 조회
+  getCount: async () => {
+    const response = await fetch('/api/products?count=true')
+    if (!response.ok) throw new Error('Failed to fetch product count')
+    return response.json()
+  },
+
+  // 제품 생성 (메인 이미지 + 설명 이미지들)
+  create: async (data: {
+    title: string
+    description?: string
+    topNote?: string
+    middleNote?: string
+    baseNote?: string
+    price: number
+    mainImageUrl?: string
+    brandId: number
+    images?: string[]
+  }) => {
     const response = await fetch('/api/products', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -36,8 +52,19 @@ const productsApi = {
   },
 
   // 제품 수정
-  update: async ({ id, data }: { id: number; data: UpdateProductData }) => {
-    const response = await fetch(`/api/products/${id}`, {
+  update: async (data: {
+    id: number
+    title?: string
+    description?: string
+    topNote?: string
+    middleNote?: string
+    baseNote?: string
+    price?: number
+    mainImageUrl?: string
+    brandId?: number
+    images?: string[]
+  }) => {
+    const response = await fetch(`/api/products/${data.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -54,16 +81,9 @@ const productsApi = {
     if (!response.ok) throw new Error('Failed to delete product')
     return response.json()
   },
-
-  // 제품 개수 조회
-  getCount: async () => {
-    const response = await fetch('/api/products?count=true')
-    if (!response.ok) throw new Error('Failed to fetch product count')
-    return response.json()
-  },
 }
 
-// Query Hooks
+//Query Hooks
 export const useProducts = () => {
   return useQuery({
     queryKey: ['products'],
@@ -94,7 +114,7 @@ export const useProductCount = () => {
   })
 }
 
-// Mutation Hooks
+//Mutation Hooks
 export const useCreateProduct = () => {
   const queryClient = useQueryClient()
 
@@ -105,6 +125,9 @@ export const useCreateProduct = () => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
       queryClient.invalidateQueries({ queryKey: ['products', 'brand', variables.brandId] })
       queryClient.invalidateQueries({ queryKey: ['products', 'count'] })
+      
+      // 브랜드 관련 쿼리도 갱신 (제품이 추가됨)
+      queryClient.invalidateQueries({ queryKey: ['brands'] })
     },
   })
 }
@@ -132,6 +155,47 @@ export const useDeleteProduct = () => {
     onSuccess: () => {
       // 성공 시 모든 제품 관련 쿼리 갱신
       queryClient.invalidateQueries({ queryKey: ['products'] })
+      queryClient.invalidateQueries({ queryKey: ['brands'] })
+    },
+  })
+}
+
+//브랜드와 제품 연동 훅스
+export const useBrandWithProducts = (brandId: number) => {
+  const brandQuery = useQuery({
+    queryKey: ['brands', brandId],
+    queryFn: async () => {
+      const response = await fetch(`/api/brands/${brandId}`)
+      if (!response.ok) throw new Error('Failed to fetch brand')
+      return response.json()
+    },
+    enabled: !!brandId,
+  })
+
+  const productsQuery = useProductsByBrand(brandId)
+
+  return {
+    brand: brandQuery.data,
+    products: productsQuery.data,
+    isLoading: brandQuery.isLoading || productsQuery.isLoading,
+    error: brandQuery.error || productsQuery.error,
+  }
+}
+
+//이미지 업로드 지원 훅
+export const useUploadImage = () => {
+  return useMutation({
+    mutationFn: async (file: File) => {
+      const formData = new FormData()
+      formData.append('file', file)
+      
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+      
+      if (!response.ok) throw new Error('Failed to upload image')
+      return response.json()
     },
   })
 }
