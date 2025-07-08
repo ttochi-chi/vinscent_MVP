@@ -5,82 +5,82 @@ import { Search, Menu, X, User, Settings } from 'lucide-react';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 
-export interface HeaderProps
-{
-    className?: string;
-    hideSearch?: boolean;
-    hideUserMenu?: boolean;
-    logoHref?: string;
+// TypeScript 인터페이스 정의
+export interface HeaderProps {
+  className?: string;
+  hideSearch?: boolean;
+  hideUserMenu?: boolean;
+  logoHref?: string;
 }
 
-interface NavItem
-{
-    label: string;
-    href: string;
-    icon?: React.ReactNode;
+// 네비게이션 메뉴 타입
+interface NavItem {
+  label: string;
+  href: string;
+  icon?: React.ReactNode;
 }
 
-// Header 컴포넌트
+// Header 컴포넌트 구현
 export const Header: React.FC<HeaderProps> = ({
-    className = '',
-    hideSearch = false,
-    hideUserMenu = false,
-    logoHref = '/',
+  className = '',
+  hideSearch = false,
+  hideUserMenu = false,
+  logoHref = '/',
 }) => {
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
-    const pathname = usePathname();
-    const router = useRouter();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const pathname = usePathname();
+  const router = useRouter();
 
-    // 메인 네비게이션 메뉴
-    const mainNavItems: NavItem[] = [
-        {label: '매거진', href: '/magazines'},
-        {label: '제품', href: '/products'},
-        {label: '브랜드', href: '/brands'},
-        {label: '어드민', href: '/admin'},
-    ];
+  // 메인 네비게이션 메뉴
+  const mainNavItems: NavItem[] = [
+    { label: '매거진', href: '/magazines' },
+    { label: '제품', href: '/products' },
+    { label: '브랜드', href: '/brands' },
+    { label: '어드민', href: '/admin' },
+  ];
 
-    // 링크 활성 확인
-    const isActiveLink = (href: string) => {
-        if(href === '/') return pathname === '/';
-        return pathname.startsWith(href);
-    };
+  // 활성 링크 확인
+  const isActiveLink = (href: string) => {
+    if (href === '/') return pathname === '/';
+    return pathname.startsWith(href);
+  };
 
-    // 검색 처리
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
-        if(searchTerm.trim())
-        {
-            router.push(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
-        }
-    };
+  // 검색 처리
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
+    }
+  };
 
-    // 모바일 메뉴 토글
-    const toggleMobileMenu = () => {
-        setIsMobileMenuOpen(!isMobileMenuOpen);
-    };
+  // 모바일 메뉴 토글
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
-    // 모바일 메뉴 닫기
-    const closeMobileMenu = () => {
-        setIsMobileMenuOpen(false);
-    };
+  // 모바일 메뉴 닫기
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
 
- return (
+  return (
     <header className={`header ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* 🔧 로고 및 브랜드명 */}
+          {/* 로고 및 브랜드명 */}
           <div className="flex items-center">
             <Link 
               href={logoHref}
               className="flex items-center space-x-2 text-xl font-bold text-gray-900 hover:text-gray-700 transition-colors"
               style={{ fontFamily: 'var(--font-family-logo)' }}
             >
+              <span className="text-2xl">🌹</span>
               <span>Vinscent</span>
             </Link>
           </div>
 
-          {/* 🔧 중앙 검색바 (데스크톱) */}
+          {/* 중앙 검색바 (데스크톱) */}
           {!hideSearch && (
             <div className="hidden md:flex flex-1 max-w-lg mx-8">
               <form onSubmit={handleSearch} className="w-full">
@@ -96,7 +96,7 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           )}
 
-          {/* 🔧 데스크톱 네비게이션 */}
+          {/* 데스크톱 네비게이션 */}
           <nav className="hidden md:flex items-center space-x-1">
             {mainNavItems.map((item) => (
               <Link
@@ -113,9 +113,9 @@ export const Header: React.FC<HeaderProps> = ({
             ))}
           </nav>
 
-          {/* 🔧 사용자 메뉴 & 모바일 버튼 */}
+          {/* 사용자 메뉴 & 모바일 버튼 */}
           <div className="flex items-center space-x-2">
-            {/* 🔧 사용자 메뉴 (데스크톱) */}
+            {/* 사용자 메뉴 (데스크톱) */}
             {!hideUserMenu && (
               <div className="hidden md:flex items-center space-x-2">
                 <Button
@@ -137,7 +137,7 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
             )}
 
-            {/* 🔧 모바일 메뉴 버튼 */}
+            {/* 모바일 메뉴 버튼 */}
             <Button
               variant="ghost"
               size="sm"
@@ -150,7 +150,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* 🔧 모바일 검색바 */}
+        {/* 모바일 검색바 */}
         {!hideSearch && (
           <div className="md:hidden pb-3">
             <form onSubmit={handleSearch}>
@@ -167,11 +167,11 @@ export const Header: React.FC<HeaderProps> = ({
         )}
       </div>
 
-      {/* 🔧 모바일 네비게이션 메뉴 */}
+      {/* 모바일 네비게이션 메뉴 */}
       {isMobileMenuOpen && (
         <div className="md:hidden border-t border-gray-200 bg-white">
           <div className="px-2 pt-2 pb-3 space-y-1">
-            {/* 🔧 메인 네비게이션 */}
+            {/* 메인 네비게이션 */}
             {mainNavItems.map((item) => (
               <Link
                 key={item.href}
@@ -187,7 +187,7 @@ export const Header: React.FC<HeaderProps> = ({
               </Link>
             ))}
 
-            {/* 🔧 모바일 사용자 메뉴 */}
+            {/* 모바일 사용자 메뉴 */}
             {!hideUserMenu && (
               <div className="border-t border-gray-200 pt-3 mt-3">
                 <Link
@@ -213,7 +213,7 @@ export const Header: React.FC<HeaderProps> = ({
   );
 };
 
-// 🔧 사용 예시 및 패턴 가이드
+// 사용 예시 및 패턴 가이드
 export const HeaderExamples = {
   // 기본 헤더
   basic: () => <Header />,

@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import { Header } from './Header';
 
 export interface FooterProps {
   className?: string;
@@ -13,7 +12,7 @@ export const Footer: React.FC<FooterProps> = ({
 }) => {
   const currentYear = new Date().getFullYear();
 
-  // 🔧 푸터 링크 그룹
+  // 푸터 링크 그룹
   const footerLinks = {
     product: [
       { label: '매거진', href: '/magazines' },
@@ -52,9 +51,9 @@ export const Footer: React.FC<FooterProps> = ({
   return (
     <footer className={`bg-white border-t border-gray-200 ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/*메인 푸터 콘텐츠 */}
+        {/* 메인 푸터 콘텐츠 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-          {/*브랜드 섹션 */}
+          {/* 브랜드 섹션 */}
           <div className="lg:col-span-2">
             <Link 
               href="/"
@@ -82,7 +81,7 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
           </div>
 
-          {/*제품 링크 */}
+          {/* 제품 링크 */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 mb-4">제품</h3>
             <ul className="space-y-2">
@@ -99,7 +98,7 @@ export const Footer: React.FC<FooterProps> = ({
             </ul>
           </div>
 
-          {/*회사 정보 */}
+          {/* 회사 정보 */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 mb-4">회사</h3>
             <ul className="space-y-2">
@@ -116,7 +115,7 @@ export const Footer: React.FC<FooterProps> = ({
             </ul>
           </div>
 
-          {/*고객지원 */}
+          {/* 고객지원 */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 mb-4">지원</h3>
             <ul className="space-y-2">
@@ -134,7 +133,7 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
         </div>
 
-        {/*하단 저작권 */}
+        {/* 하단 저작권 */}
         <div className="border-t border-gray-200 mt-8 pt-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <p className="text-sm text-gray-500">

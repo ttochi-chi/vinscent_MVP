@@ -5,9 +5,13 @@ import { Button } from './Button';
 // ==================== LOADING COMPONENTS ====================
 
 export interface LoadingProps {
+  /** 로딩 타입 */
   variant?: 'spinner' | 'skeleton' | 'pulse' | 'dots';
+  /** 크기 */
   size?: 'sm' | 'md' | 'lg';
+  /** 로딩 메시지 */
   message?: string;
+  /** 추가 CSS 클래스 */
   className?: string;
 }
 
@@ -63,7 +67,7 @@ export const Loading: React.FC<LoadingProps> = ({
   );
 };
 
-//페이지 로딩 컴포넌트
+// 🔧 페이지 로딩 컴포넌트
 export const PageLoading: React.FC<{ message?: string }> = ({ 
   message = '페이지를 불러오는 중...' 
 }) => (
@@ -72,7 +76,7 @@ export const PageLoading: React.FC<{ message?: string }> = ({
   </div>
 );
 
-//카드 스켈레톤 컴포넌트들
+// 🔧 카드 스켈레톤 컴포넌트들
 export const CardSkeleton: React.FC<{ type?: 'brand' | 'product' | 'magazine' }> = ({ 
   type = 'brand' 
 }) => (
@@ -101,11 +105,18 @@ export const CardSkeleton: React.FC<{ type?: 'brand' | 'product' | 'magazine' }>
   </div>
 );
 
+// ==================== ERROR COMPONENTS ====================
+
 export interface ErrorProps {
+  /** 에러 메시지 */
   message?: string;
+  /** 에러 타입 */
   variant?: 'error' | 'warning' | 'info';
+  /** 재시도 버튼 표시 */
   showRetry?: boolean;
+  /** 재시도 핸들러 */
   onRetry?: () => void;
+  /** 추가 CSS 클래스 */
   className?: string;
 }
 
@@ -161,7 +172,7 @@ export const ErrorDisplay: React.FC<ErrorProps> = ({
   );
 };
 
-//페이지 에러 컴포넌트
+// 🔧 페이지 에러 컴포넌트
 export const PageError: React.FC<{
   title?: string;
   message?: string;
@@ -185,15 +196,26 @@ export const PageError: React.FC<{
   </div>
 );
 
+// ==================== IMAGE UPLOAD COMPONENT ====================
+
 export interface ImageUploadProps {
+  /** 업로드된 이미지 URL들 */
   value?: string[];
+  /** 이미지 변경 핸들러 */
   onChange?: (urls: string[]) => void;
+  /** 최대 이미지 개수 */
   maxImages?: number;
+  /** 단일 이미지 모드 */
   single?: boolean;
+  /** 라벨 */
   label?: string;
+  /** 에러 메시지 */
   error?: string;
+  /** 비활성화 */
   disabled?: boolean;
+  /** 허용 파일 형식 */
   accept?: string;
+  /** 최대 파일 크기 (MB) */
   maxSizeMB?: number;
 }
 
@@ -364,4 +386,75 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
       )}
     </div>
   );
+};
+
+// ==================== 사용 예시 ====================
+
+export const UtilityExamples = {
+  // 로딩 상태들
+  loadingStates: () => (
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Loading variant="spinner" size="sm" message="작은 스피너" />
+        <Loading variant="spinner" size="md" message="중간 스피너" />
+        <Loading variant="spinner" size="lg" message="큰 스피너" />
+        <Loading variant="dots" size="md" message="도트 로딩" />
+      </div>
+      
+      <PageLoading message="데이터를 불러오는 중..." />
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <CardSkeleton type="brand" />
+        <CardSkeleton type="product" />
+        <CardSkeleton type="magazine" />
+      </div>
+    </div>
+  ),
+
+  // 에러 상태들
+  errorStates: () => (
+    <div className="space-y-4">
+      <ErrorDisplay 
+        message="데이터를 불러올 수 없습니다." 
+        showRetry 
+        onRetry={() => console.log('재시도')}
+      />
+      <ErrorDisplay 
+        variant="warning"
+        message="일부 기능이 제한될 수 있습니다." 
+      />
+      <ErrorDisplay 
+        variant="info"
+        message="새로운 업데이트가 있습니다." 
+      />
+      
+      <PageError 
+        onRetry={() => console.log('페이지 재시도')}
+      />
+    </div>
+  ),
+
+  // 이미지 업로드
+  imageUpload: () => {
+    const [images, setImages] = React.useState<string[]>([]);
+    const [singleImage, setSingleImage] = React.useState<string[]>([]);
+    
+    return (
+      <div className="space-y-6">
+        <ImageUpload
+          label="제품 이미지 (다중)"
+          value={images}
+          onChange={setImages}
+          maxImages={3}
+        />
+        
+        <ImageUpload
+          label="프로필 이미지 (단일)"
+          value={singleImage}
+          onChange={setSingleImage}
+          single={true}
+        />
+      </div>
+    );
+  },
 };
