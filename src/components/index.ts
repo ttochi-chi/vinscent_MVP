@@ -9,7 +9,7 @@ export {
   ErrorDisplay, 
   PageError, 
   ImageUpload 
-} from './ui/[utility]';
+} from './ui/utilities';
 
 // 레이아웃 컴포넌트
 export { default as Header } from './layout/Header';

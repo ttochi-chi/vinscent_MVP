@@ -15,7 +15,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   required?: boolean;
 }
 
-// 🔧 Input 컴포넌트 구현
+//Input 컴포넌트 구현
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
@@ -76,7 +76,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className={`input-group ${containerClassName}`}>
-        {/* 🔧 라벨 */}
+        {/*라벨 */}
         {label && (
           <label 
             htmlFor={inputId}

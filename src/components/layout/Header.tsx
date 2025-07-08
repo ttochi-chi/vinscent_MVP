@@ -76,7 +76,6 @@ export const Header: React.FC<HeaderProps> = ({
               className="flex items-center space-x-2 text-xl font-bold text-gray-900 hover:text-gray-700 transition-colors"
               style={{ fontFamily: 'var(--font-family-logo)' }}
             >
-              <span className="text-2xl">🌹</span>
               <span>Vinscent</span>
             </Link>
           </div>

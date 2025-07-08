@@ -2,12 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { Header } from './Header';
 
-// ==================== FOOTER COMPONENT ====================
-
 export interface FooterProps {
-  /** 추가 CSS 클래스 */
   className?: string;
-  /** 간단 모드 (링크 최소화) */
   minimal?: boolean;
 }
 
@@ -56,16 +52,15 @@ export const Footer: React.FC<FooterProps> = ({
   return (
     <footer className={`bg-white border-t border-gray-200 ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* 🔧 메인 푸터 콘텐츠 */}
+        {/*메인 푸터 콘텐츠 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-          {/* 🔧 브랜드 섹션 */}
+          {/*브랜드 섹션 */}
           <div className="lg:col-span-2">
             <Link 
               href="/"
               className="flex items-center space-x-2 text-xl font-bold text-gray-900 mb-4"
               style={{ fontFamily: 'var(--font-family-logo)' }}
             >
-              <span className="text-2xl">🌹</span>
               <span>Vinscent</span>
             </Link>
             <p className="text-gray-600 text-sm mb-4 max-w-md">
@@ -87,7 +82,7 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
           </div>
 
-          {/* 🔧 제품 링크 */}
+          {/*제품 링크 */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 mb-4">제품</h3>
             <ul className="space-y-2">
@@ -104,7 +99,7 @@ export const Footer: React.FC<FooterProps> = ({
             </ul>
           </div>
 
-          {/* 🔧 회사 정보 */}
+          {/*회사 정보 */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 mb-4">회사</h3>
             <ul className="space-y-2">
@@ -121,7 +116,7 @@ export const Footer: React.FC<FooterProps> = ({
             </ul>
           </div>
 
-          {/* 🔧 고객지원 */}
+          {/*고객지원 */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 mb-4">지원</h3>
             <ul className="space-y-2">
@@ -139,14 +134,14 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
         </div>
 
-        {/* 🔧 하단 저작권 */}
+        {/*하단 저작권 */}
         <div className="border-t border-gray-200 mt-8 pt-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <p className="text-sm text-gray-500">
               © {currentYear} Vinscent. All rights reserved.
             </p>
             <p className="text-sm text-gray-500 mt-2 md:mt-0">
-              Made with ❤️ for fragrance lovers
+              Made with Like for fragrance lovers
             </p>
           </div>
         </div>
