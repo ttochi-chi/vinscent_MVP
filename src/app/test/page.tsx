@@ -1,12 +1,3 @@
-/**
- * 🧪 Vinscent MVP 컴포넌트 테스트 페이지
- * 
- * 파일 위치: src/app/test/page.tsx
- * 
- * 목적: 구현된 모든 컴포넌트의 동작을 확인하고 테스트
- * 접속: http://localhost:3000/test
- */
-
 'use client';
 
 import React, { useState } from 'react';
@@ -29,7 +20,7 @@ import {
   ErrorDisplay, 
   PageError, 
   ImageUpload 
-} from '@/components/ui/[utility]';
+} from '@/components/ui/utilities';
 
 // 🔧 타입 imports
 import { Brand, Product, Magazine } from '@/types';

@@ -21,7 +21,7 @@ interface NavItem
 }
 
 // Header 컴포넌트
-export const Header:React.FC<HeaderProps> = ({
+export const Header: React.FC<HeaderProps> = ({
     className = '',
     hideSearch = false,
     hideUserMenu = false,
