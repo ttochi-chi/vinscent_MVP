@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "npm run dev",
+    "test:components": "open http://localhost:3000/test"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.81.5",

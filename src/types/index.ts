@@ -31,18 +31,7 @@ export interface ProductImage {
   updatedDate?: Date;
 }
 
-export interface ProductWithImages {
-  id: number;
-  title: string;
-  description?: string;
-  topNote?: string;
-  middleNote?: string;
-  baseNote?: string;
-  price: number;
-  mainImageUrl?: string;
-  brandId: number;
-  createdDate?: Date;
-  updatedDate?: Date;
+export interface ProductWithImages extends Product {
   images?: ProductImage[];
 }
 
@@ -64,13 +53,7 @@ export interface MagazinePhoto {
   updatedDate?: Date;
 }
 
-export interface MagazineWithImages {
-  id: number;
-  title: string;
-  content?: string;
-  brandId: number;
-  createdDate?: Date;
-  updatedDate?: Date;
+export interface MagazineWithImages extends Magazine {
   images?: MagazinePhoto[];
 }
 
@@ -122,4 +105,18 @@ export interface UpdateMagazineData {
   content?: string;
   brandId?: number;
   images?: string[];
+}
+
+// API 응답 타입들
+export interface ApiResponse<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  message?: string;
+}
+
+export interface PaginatedResponse<T> extends ApiResponse<T[]> {
+  total: number;
+  page: number;
+  limit: number;
 }
