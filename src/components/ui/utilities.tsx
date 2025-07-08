@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Upload, AlertCircle, RefreshCw, X, Image as ImageIcon } from 'lucide-react';
-import { Button } from './Button';
+import Button from './Button';
 
 // ==================== LOADING COMPONENTS ====================
 

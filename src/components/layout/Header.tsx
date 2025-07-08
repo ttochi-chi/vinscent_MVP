@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { Search, Menu, X, User, Settings } from 'lucide-react';
 import { Input } from '../ui/Input';
-import { Button } from '../ui/Button';
+import Button from '../ui/Button';
 
 // TypeScript 인터페이스 정의
 export interface HeaderProps {
@@ -75,7 +75,6 @@ export const Header: React.FC<HeaderProps> = ({
               className="flex items-center space-x-2 text-xl font-bold text-gray-900 hover:text-gray-700 transition-colors"
               style={{ fontFamily: 'var(--font-family-logo)' }}
             >
-              <span className="text-2xl">🌹</span>
               <span>Vinscent</span>
             </Link>
           </div>
