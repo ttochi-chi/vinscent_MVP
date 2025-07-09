@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { Upload, AlertCircle, RefreshCw, X, Image as ImageIcon } from 'lucide-react';
+import { Upload, AlertCircle, RefreshCw, X, Info } from 'lucide-react'; // Added Info icon
 import Button from './Button';
+import Card from './Card'; // Import Card for CardSkeleton
 
 // ==================== LOADING COMPONENTS ====================
 
@@ -8,7 +9,7 @@ export interface LoadingProps {
   /** 로딩 타입 */
   variant?: 'spinner' | 'skeleton' | 'pulse' | 'dots';
   /** 크기 */
-  size?: 'sm' | 'md' | 'lg';
+  loadingSize?: 'sm' | 'md' | 'lg';
   /** 로딩 메시지 */
   message?: string;
   /** 추가 CSS 클래스 */
@@ -17,51 +18,50 @@ export interface LoadingProps {
 
 export const Loading: React.FC<LoadingProps> = ({
   variant = 'spinner',
-  size = 'md',
+  loadingSize = 'md',
   message,
   className = '',
 }) => {
-  const getSizeClasses = () => {
-    const sizeMap = {
-      sm: 'w-4 h-4',
-      md: 'w-8 h-8',
-      lg: 'w-12 h-12',
-    };
-    return sizeMap[size];
+    const loadingClasses = [
+      'loading',
+      `loading--variant-${variant}`,
+      `loading--size-${loadingSize}`,
+      className
+      ].filter(Boolean).join(' ');
+
+  const renderIconWrapper = () => {
+    switch (variant) {
+      case 'spinner':
+        return (
+          <div className="loading__icon-wrapper" role="status">
+            <span className="sr-only">로딩 중...</span>
+          </div>
+        );
+      case 'dots':
+        return (
+          <div className="loading__icon-wrapper">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className="loading__dot"
+              />
+            ))}
+          </div>
+        );
+      case 'skeleton':
+        return <div className="loading__icon-wrapper" />;
+      case 'pulse':
+        return <div className="loading__icon-wrapper" />;
+      default:
+        return null;
+    }
   };
 
-  const renderSpinner = () => (
-    <div className={`inline-block animate-spin rounded-full border-2 border-solid border-current border-r-transparent ${getSizeClasses()}`} role="status">
-      <span className="sr-only">로딩 중...</span>
-    </div>
-  );
-
-  const renderDots = () => (
-    <div className="flex space-x-1">
-      {[0, 1, 2].map((i) => (
-        <div
-          key={i}
-          className={`bg-current rounded-full animate-pulse ${size === 'sm' ? 'w-1 h-1' : size === 'lg' ? 'w-3 h-3' : 'w-2 h-2'}`}
-          style={{ animationDelay: `${i * 0.2}s` }}
-        />
-      ))}
-    </div>
-  );
-
   return (
-    <div className={`flex flex-col items-center justify-center p-4 ${className}`}>
-      <div className="text-gray-500 mb-2">
-        {variant === 'spinner' && renderSpinner()}
-        {variant === 'dots' && renderDots()}
-        {variant === 'skeleton' && (
-          <div className={`skeleton ${getSizeClasses()}`} />
-        )}
-        {variant === 'pulse' && (
-          <div className={`bg-gray-200 rounded animate-pulse ${getSizeClasses()}`} />
-        )}
-      </div>
+    <div className={loadingClasses}>
+      {renderIconWrapper()}
       {message && (
-        <p className="text-sm text-gray-600 text-center">{message}</p>
+        <p className="loading__message">{message}</p>
       )}
     </div>
   );
@@ -71,8 +71,8 @@ export const Loading: React.FC<LoadingProps> = ({
 export const PageLoading: React.FC<{ message?: string }> = ({ 
   message = '페이지를 불러오는 중...' 
 }) => (
-  <div className="min-h-96 flex items-center justify-center">
-    <Loading variant="spinner" size="lg" message={message} />
+  <div className="page-loading">
+    <Loading variant="spinner" loadingSize="lg" message={message} />
   </div>
 );
 
@@ -80,26 +80,26 @@ export const PageLoading: React.FC<{ message?: string }> = ({
 export const CardSkeleton: React.FC<{ type?: 'brand' | 'product' | 'magazine' }> = ({ 
   type = 'brand' 
 }) => (
-  <div className="card-base p-4">
+  <div className="card-skeleton">
     {type === 'brand' && (
       <>
-        <div className="skeleton-avatar mx-auto mb-3" />
-        <div className="skeleton-text w-20 mx-auto" />
+        <div className="card-skeleton__avatar" />
+        <div className="card-skeleton__text" />
       </>
     )}
     {type === 'product' && (
       <>
-        <div className="skeleton-image mb-3" />
-        <div className="skeleton-text w-3/4 mb-2" />
-        <div className="skeleton-text w-1/2" />
+        <div className="card-skeleton__image" />
+        <div className="card-skeleton__text" />
+        <div className="card-skeleton__text" />
       </>
     )}
     {type === 'magazine' && (
       <>
-        <div className="skeleton-image mb-3" style={{ height: 240 }} />
-        <div className="skeleton-text w-full mb-2" />
-        <div className="skeleton-text w-3/4 mb-2" />
-        <div className="skeleton-text w-1/2" />
+        <div className="card-skeleton__image" />
+        <div className="card-skeleton__text" />
+        <div className="card-skeleton__text" />
+        <div className="card-skeleton__text" />
       </>
     )}
   </div>
@@ -127,47 +127,25 @@ export const ErrorDisplay: React.FC<ErrorProps> = ({
   onRetry,
   className = '',
 }) => {
-  const getVariantClasses = () => {
-    switch (variant) {
-      case 'warning':
-        return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-      case 'info':
-        return 'text-blue-600 bg-blue-50 border-blue-200';
-      default:
-        return 'text-red-600 bg-red-50 border-red-200';
-    }
-  };
-
-  const getIcon = () => {
-    switch (variant) {
-      case 'warning':
-        return '⚠️';
-      case 'info':
-        return 'ℹ️';
-      default:
-        return '❌';
-    }
-  };
+  const IconComponent = variant === 'info' ? Info : AlertCircle;
 
   return (
-    <div className={`border rounded-lg p-4 ${getVariantClasses()} ${className}`}>
-      <div className="flex items-center">
-        <span className="text-xl mr-3">{getIcon()}</span>
-        <div className="flex-1">
-          <p className="font-medium">{message}</p>
-        </div>
-        {showRetry && onRetry && (
-          <Button
-            variant="ghost"
-            size="sm"
-            leftIcon={RefreshCw}
-            onClick={onRetry}
-            className="ml-4"
-          >
-            재시도
-          </Button>
-        )}
+    <div className={`error-display error-display--variant-${variant} ${className}`}>
+      <IconComponent className="error-display__icon" />
+      <div className="error-display__content">
+        <p className="error-display__message">{message}</p>
       </div>
+      {showRetry && onRetry && (
+        <Button
+          variant="ghost"
+          size="sm"
+          leftIcon={RefreshCw}
+          onClick={onRetry}
+          className="error-display__actions"
+        >
+          재시도
+        </Button>
+      )}
     </div>
   );
 };
@@ -182,11 +160,11 @@ export const PageError: React.FC<{
   message = '페이지를 불러오는 중 오류가 발생했습니다.',
   onRetry,
 }) => (
-  <div className="min-h-96 flex items-center justify-center">
-    <div className="text-center max-w-md">
-      <div className="text-6xl mb-4">😵</div>
-      <h2 className="text-2xl font-semibold text-gray-900 mb-2">{title}</h2>
-      <p className="text-gray-600 mb-6">{message}</p>
+  <div className="page-error">
+    <div className="page-error__content">
+      <AlertCircle className="page-error__icon" /> {/* Using AlertCircle for general error icon */}
+      <h2 className="page-error__title">{title}</h2>
+      <p className="page-error__message">{message}</p>
       {onRetry && (
         <Button variant="primary" onClick={onRetry} leftIcon={RefreshCw}>
           다시 시도
@@ -308,10 +286,10 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   const canUpload = !disabled && (single ? value.length === 0 : value.length < maxImages);
 
   return (
-    <div className="space-y-3">
+    <div className="image-upload">
       {/* 라벨 */}
       {label && (
-        <label className="input-label">
+        <label className="image-upload__label">
           {label}
           {!single && ` (최대 ${maxImages}개)`}
         </label>
@@ -320,11 +298,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
       {/* 업로드 영역 */}
       {canUpload && (
         <div
-          className={`
-            border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors
-            ${dragOver ? 'border-blue-400 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}
-            ${disabled ? 'cursor-not-allowed opacity-50' : ''}
-          `}
+          className={`image-upload__area ${dragOver ? 'image-upload__area--drag-over' : ''} ${disabled ? 'image-upload__area--disabled' : ''}`}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -344,11 +318,11 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
             <Loading variant="spinner" message="업로드 중..." />
           ) : (
             <>
-              <Upload className="mx-auto h-12 w-12 text-gray-400 mb-3" />
-              <p className="text-gray-600">
+              <Upload className="image-upload__icon" />
+              <p className="image-upload__text">
                 클릭하거나 파일을 드래그하여 업로드
               </p>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="image-upload__text image-upload__text--small">
                 PNG, JPG, GIF 파일 (최대 {maxSizeMB}MB)
               </p>
             </>
@@ -358,13 +332,13 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
 
       {/* 업로드된 이미지 미리보기 */}
       {value.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="image-upload__preview-grid">
           {value.map((url, index) => (
-            <div key={index} className="relative group">
+            <div key={index} className="image-upload__preview-item">
               <img
                 src={url}
                 alt={`업로드된 이미지 ${index + 1}`}
-                className="w-full h-24 object-cover rounded-lg border border-gray-200"
+                className="image-upload__preview-image"
               />
               <Button
                 variant="ghost"
@@ -372,7 +346,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
                 iconOnly
                 rightIcon={X}
                 onClick={() => removeImage(index)}
-                className="absolute top-1 right-1 bg-white/80 opacity-0 group-hover:opacity-100 transition-opacity"
+                className="image-upload__remove-button"
                 aria-label="이미지 삭제"
               />
             </div>
@@ -382,7 +356,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
 
       {/* 에러 메시지 */}
       {error && (
-        <p className="input-error-message">{error}</p>
+        <p className="image-upload__error-message">{error}</p>
       )}
     </div>
   );
@@ -395,10 +369,10 @@ export const UtilityExamples = {
   loadingStates: () => (
     <div className="space-y-6">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Loading variant="spinner" size="sm" message="작은 스피너" />
-        <Loading variant="spinner" size="md" message="중간 스피너" />
-        <Loading variant="spinner" size="lg" message="큰 스피너" />
-        <Loading variant="dots" size="md" message="도트 로딩" />
+        <Loading variant="spinner" loadingSize="sm" message="작은 스피너" />
+        <Loading variant="spinner" loadingSize="md" message="중간 스피너" />
+        <Loading variant="spinner" loadingSize="lg" message="큰 스피너" />
+        <Loading variant="dots" loadingSize="md" message="도트 로딩" />
       </div>
       
       <PageLoading message="데이터를 불러오는 중..." />

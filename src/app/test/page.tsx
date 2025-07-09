@@ -28,7 +28,7 @@ import {
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Card, { CardContent, CardHeader } from '@/components/ui/Card';
-import Modal, { ConfirmDialog } from '@/components/ui/Modal';
+import Modal from '@/components/ui/Modal';
 import MainLayout from '@/components/layout/MainLayout';
 import BrandCard from '@/components/features/BrandCard';
 import ProductCard from '@/components/features/ProductCard';
@@ -114,7 +114,6 @@ const mockMagazines: Magazine[] = [
 export default function ComponentTestPage() {
   // 상태 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('buttons');
   const [formData, setFormData] = useState({
     name: '',

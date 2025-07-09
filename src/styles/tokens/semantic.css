@@ -1,10 +1,10 @@
 /*시맨틱 토큰 (Semantic Tokens)*/
 :root {
   /* ===== Brand Colors ===== */
-  --color-primary: var(--color-purple-500);
-  --color-primary-hover: var(--color-purple-600);
-  --color-primary-active: var(--color-purple-700);
-  --color-primary-light: var(--color-purple-100);
+  --color-primary: var(--color-gray-500);
+  --color-primary-hover: var(--color-gray-600);
+  --color-primary-active: var(--color-gray-700);
+  --color-primary-light: var(--color-gray-100);
   
   --color-secondary: var(--color-gray-500);
   --color-secondary-hover: var(--color-gray-600);
@@ -20,7 +20,7 @@
   --text-on-secondary: var(--color-white);
   
   /* ===== Background Colors ===== */
-  --bg-page: var(--color-gray-50);
+  --bg-page: var(--color-white);
   --bg-surface: var(--color-white);
   --bg-surface-hover: var(--color-gray-50);
   --bg-surface-active: var(--color-gray-100);
@@ -36,21 +36,21 @@
   --border-error: var(--color-red-500);
   
   /* ===== Status Colors ===== */
-  --color-success: var(--color-green-500);
-  --color-success-hover: var(--color-green-600);
-  --color-success-light: #dcfce7;
+  --color-success: var(--color-gray-500);
+  --color-success-hover: var(--color-gray-600);
+  --color-success-light: #var(--color-white);
   
-  --color-warning: var(--color-amber-500);
-  --color-warning-hover: var(--color-amber-600);
-  --color-warning-light: #fef3c7;
+  --color-warning: var(--color-gray-500);
+  --color-warning-hover: var(--color-gray-600);
+  --color-warning-light: var(--color-white);
   
-  --color-error: var(--color-red-500);
-  --color-error-hover: var(--color-red-600);
-  --color-error-light: #fee2e2;
+  --color-error: var(--color-gray-500);
+  --color-error-hover: var(--color-gray-600);
+  --color-error-light: var(--color-white);
   
-  --color-info: var(--color-blue-500);
-  --color-info-hover: var(--color-blue-600);
-  --color-info-light: #dbeafe;
+  --color-info: var(--color-gray-500);
+  --color-info-hover: var(--color-gray-600);
+  --color-info-light: var(--color-white);
   
   /* ===== Layout Spacing ===== */
   --space-page-padding: var(--space-4);

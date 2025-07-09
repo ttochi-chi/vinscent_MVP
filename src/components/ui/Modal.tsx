@@ -1,252 +1,321 @@
-import React, { useEffect, useRef } from 'react';
+/**
+ * Modal 컴포넌트
+ * 
+ * 🔧 주요 기능:
+ * - 다양한 크기 (sm, md, lg, xl, full)
+ * - 다양한 위치 (center, top, right, bottom, left)
+ * - 애니메이션 효과
+ * - 접근성 지원
+ * - 키보드 제어 (ESC로 닫기)
+ * 
+ * 사용처: 팝업, 다이얼로그, 알림, 서랍(Drawer)
+ */
+
+import React, { useEffect, useRef, HTMLAttributes } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
-import Button from './Button';
 
-//TypeScript 인터페이스 정의
-export interface ModalProps {
+// Modal Props 타입 정의
+interface ModalProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
+  /** 모달 열림 상태 */
   isOpen: boolean;
+  /** 모달 닫기 핸들러 */
   onClose: () => void;
-  title?: string;
+  /** 모달 크기 */
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
-  disableBackdropClose?: boolean;
-  disableEscapeClose?: boolean;
+  /** 모달 위치 */
+  position?: 'center' | 'top' | 'right' | 'bottom' | 'left';
+  /** 모달 타입 */
+  type?: 'default' | 'alert' | 'image';
+  /** 백드롭 클릭으로 닫기 허용 */
+  closeOnBackdrop?: boolean;
+  /** ESC 키로 닫기 허용 */
+  closeOnEsc?: boolean;
+  /** 닫기 버튼 숨기기 */
   hideCloseButton?: boolean;
+  /** 애니메이션 비활성화 */
+  disableAnimation?: boolean;
+  /** 모달 제목 */
+  title?: React.ReactNode;
+  /** 추가 클래스명 */
   className?: string;
-  children: React.ReactNode;
+  /** 모달 내용 */
+  children?: React.ReactNode;
 }
 
-//Modal 컴포넌트
-export const Modal: React.FC<ModalProps> = ({
+/**
+ * Modal 컴포넌트
+ * 
+ * @example
+ * // 기본 모달
+ * <Modal isOpen={isOpen} onClose={handleClose} title="모달 제목">
+ *   <Modal.Body>모달 내용</Modal.Body>
+ *   <Modal.Footer>
+ *     <Button onClick={handleClose}>닫기</Button>
+ *   </Modal.Footer>
+ * </Modal>
+ * 
+ * @example
+ * // Alert 모달
+ * <Modal isOpen={isOpen} onClose={handleClose} size="sm" type="alert">
+ *   <Modal.Header>경고</Modal.Header>
+ *   <Modal.Body>정말 삭제하시겠습니까?</Modal.Body>
+ *   <Modal.Footer align="center">
+ *     <Button variant="ghost">취소</Button>
+ *     <Button variant="danger">삭제</Button>
+ *   </Modal.Footer>
+ * </Modal>
+ */
+const Modal: React.FC<ModalProps> & {
+  Header: typeof ModalHeader;
+  Body: typeof ModalBody;
+  Footer: typeof ModalFooter;
+} = ({
   isOpen,
   onClose,
-  title,
   size = 'md',
-  disableBackdropClose = false,
-  disableEscapeClose = false,
+  position = 'center',
+  type = 'default',
+  closeOnBackdrop = true,
+  closeOnEsc = true,
   hideCloseButton = false,
+  disableAnimation = false,
+  title,
   className = '',
   children,
+  ...props
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
-  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const previousActiveElement = useRef<HTMLElement | null>(null);
+  const [isClosing, setIsClosing] = React.useState(false);
 
-  //모달 크기 클래스 매핑
-  const getSizeClasses = () => {
-    const sizeMap = {
-      sm: 'max-w-md',
-      md: 'max-w-lg', 
-      lg: 'max-w-2xl',
-      xl: 'max-w-4xl',
-      full: 'max-w-7xl mx-4',
-    };
-    return sizeMap[size];
-  };
-
-  //ESC 키 처리
+  // ESC 키 핸들러
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && !disableEscapeClose) {
+    if (!isOpen || !closeOnEsc) return;
+
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
         onClose();
       }
     };
 
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
-    }
-  }, [isOpen, onClose, disableEscapeClose]);
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [isOpen, closeOnEsc, onClose]);
 
-  //포커스 관리
+  // 포커스 관리
   useEffect(() => {
     if (isOpen) {
-      // 현재 포커스된 요소 저장
-      previousFocusRef.current = document.activeElement as HTMLElement;
+      // 현재 포커스 저장
+      previousActiveElement.current = document.activeElement as HTMLElement;
       
-      // 모달에 포커스
+      // 모달로 포커스 이동
       setTimeout(() => {
-        const focusableElement = modalRef.current?.querySelector(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        ) as HTMLElement;
-        focusableElement?.focus();
+        modalRef.current?.focus();
       }, 100);
     } else {
-      // 모달 닫힐 때 이전 포커스 복원
-      previousFocusRef.current?.focus();
+      // 이전 포커스로 복원
+      previousActiveElement.current?.focus();
     }
   }, [isOpen]);
 
-  //body 스크롤 방지
+  // 바디 스크롤 방지
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-      return () => {
-        document.body.style.overflow = 'unset';
-      };
+    } else {
+      document.body.style.overflow = '';
     }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isOpen]);
 
-  //백드롭 클릭 처리
+  // 백드롭 클릭 핸들러
   const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget && !disableBackdropClose) {
+    if (closeOnBackdrop && e.target === e.currentTarget) {
+      handleClose();
+    }
+  };
+
+  // 닫기 애니메이션 처리
+  const handleClose = () => {
+    if (!disableAnimation) {
+      setIsClosing(true);
+      setTimeout(() => {
+        setIsClosing(false);
+        onClose();
+      }, 250);
+    } else {
       onClose();
     }
   };
 
-  //모달이 닫혀있으면 렌더링 안함
-  if (!isOpen) return null;
+  // 모달이 닫혀있으면 렌더링하지 않음
+  if (!isOpen && !isClosing) return null;
 
-  //Portal을 사용한 모달 렌더링
-  return createPortal(
+  // 클래스명 조합
+  const modalClasses = [
+    'modal',
+    `modal--size-${size}`,
+    `modal--position-${position}`,
+    type !== 'default' && `modal--${type}`,
+    (isOpen && !isClosing) && 'is-open',
+    isClosing && 'is-closing',
+    className
+  ].filter(Boolean).join(' ');
+
+  // 모달 렌더링
+  const modalElement = (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm"
-      onClick={handleBackdropClick}
+      className={modalClasses}
       role="dialog"
       aria-modal="true"
       aria-labelledby={title ? 'modal-title' : undefined}
+      onClick={handleBackdropClick}
+      {...props}
     >
+      <div className="modal__backdrop" />
+      
       <div 
         ref={modalRef}
-        className={`
-          bg-white rounded-lg shadow-xl transform transition-all duration-200 ease-out
-          w-full ${getSizeClasses()} max-h-[90vh] overflow-hidden
-          ${className}
-        `}
-        onClick={(e) => e.stopPropagation()}
+        className="modal__content"
+        tabIndex={-1}
       >
-        {/*모달 헤더 */}
-        {(title || !hideCloseButton) && (
-          <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            {title && (
-              <h2 
-                id="modal-title"
-                className="text-xl font-semibold text-gray-900"
-              >
-                {title}
-              </h2>
-            )}
+        {/* 기본 헤더 (title prop 사용 시) */}
+        {title && (
+          <div className="modal__header">
+            <h2 id="modal-title" className="modal__title">{title}</h2>
             {!hideCloseButton && (
-              <Button
-                variant="ghost"
-                size="sm"
-                iconOnly
-                rightIcon={X}
-                onClick={onClose}
+              <button
+                type="button"
+                className="modal__close"
+                onClick={handleClose}
                 aria-label="모달 닫기"
-                className="ml-auto"
-              />
+              >
+                <X size={20} />
+              </button>
             )}
           </div>
         )}
-
-        {/*모달 콘텐츠 */}
-        <div className="overflow-y-auto max-h-[calc(90vh-120px)]">
-          {children}
-        </div>
+        
+        {/* children에 닫기 버튼이 없는 Header가 있을 경우를 위한 처리 */}
+        {!title && !hideCloseButton && (
+          <button
+            type="button"
+            className="modal__close"
+            onClick={handleClose}
+            aria-label="모달 닫기"
+            style={{ position: 'absolute', top: 'var(--space-3)', right: 'var(--space-3)', zIndex: 1 }}
+          >
+            <X size={20} />
+          </button>
+        )}
+        
+        {children}
       </div>
-    </div>,
-    document.body
+    </div>
   );
+
+  // Portal을 사용하여 body에 렌더링
+  return createPortal(modalElement, document.body);
 };
 
-//Modal 하위 컴포넌트들
-export const ModalContent: React.FC<{ 
-  children: React.ReactNode; 
-  className?: string;
-}> = ({ children, className = '' }) => (
-  <div className={`p-6 ${className}`}>
-    {children}
-  </div>
-);
-
-export const ModalFooter: React.FC<{ 
-  children: React.ReactNode; 
-  className?: string;
-}> = ({ children, className = '' }) => (
-  <div className={`flex items-center justify-end space-x-2 p-6 border-t border-gray-200 bg-gray-50 ${className}`}>
-    {children}
-  </div>
-);
-
-//확인 다이얼로그 컴포넌트
-export interface ConfirmDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  title: string;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
-  variant?: 'danger' | 'warning' | 'info';
+// Modal Header 컴포넌트
+interface ModalHeaderProps extends HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
 }
 
-export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
-  isOpen,
-  onClose,
-  onConfirm,
-  title,
-  message,
-  confirmText = '확인',
-  cancelText = '취소',
-  variant = 'info',
-}) => {
-  const getVariantClasses = () => {
-    switch (variant) {
-      case 'danger':
-        return 'text-red-600';
-      case 'warning':
-        return 'text-yellow-600';
-      default:
-        return 'text-blue-600';
-    }
-  };
+const ModalHeader: React.FC<ModalHeaderProps> = ({ 
+  children, 
+  className = '', 
+  ...props 
+}) => (
+  <div className={`modal__header ${className}`} {...props}>
+    {children}
+  </div>
+);
 
-  const getConfirmButtonVariant = () => {
-    return variant === 'danger' ? 'secondary' : 'primary';
-  };
+// Modal Title 컴포넌트  
+interface ModalTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+  children?: React.ReactNode;
+}
 
-  return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      size="sm"
-      hideCloseButton={false}
-    >
-      <ModalContent>
-        <div className="text-center">
-          <div className={`mx-auto mb-4 text-4xl ${getVariantClasses()}`}>
-            {variant === 'danger'}
-            {variant === 'warning'}
-            {variant === 'info'}
-          </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-4">
-            {title}
-          </h3>
-          <p className="text-gray-600 mb-6">
-            {message}
-          </p>
-        </div>
-      </ModalContent>
-      
-      <ModalFooter>
-        <Button
-          variant="ghost"
-          onClick={onClose}
-        >
-          {cancelText}
-        </Button>
-        <Button
-          variant={getConfirmButtonVariant()}
-          onClick={() => {
-            onConfirm();
-            onClose();
-          }}
-        >
-          {confirmText}
-        </Button>
-      </ModalFooter>
-    </Modal>
-  );
+const ModalTitle: React.FC<ModalTitleProps> = ({ 
+  children, 
+  className = '', 
+  ...props 
+}) => (
+  <h2 className={`modal__title ${className}`} {...props}>
+    {children}
+  </h2>
+);
+
+// Modal Body 컴포넌트
+interface ModalBodyProps extends HTMLAttributes<HTMLDivElement> {
+  /** 패딩 제거 */
+  noPadding?: boolean;
+  children?: React.ReactNode;
+}
+
+const ModalBody: React.FC<ModalBodyProps> = ({ 
+  noPadding = false,
+  children, 
+  className = '', 
+  ...props 
+}) => (
+  <div 
+    className={`modal__body ${noPadding ? 'modal__body--no-padding' : ''} ${className}`} 
+    {...props}
+  >
+    {children}
+  </div>
+);
+
+// Modal Footer 컴포넌트
+interface ModalFooterProps extends HTMLAttributes<HTMLDivElement> {
+  /** 정렬 */
+  align?: 'start' | 'end' | 'center' | 'between';
+  children?: React.ReactNode;
+}
+
+const ModalFooter: React.FC<ModalFooterProps> = ({ 
+  align = 'end',
+  children, 
+  className = '', 
+  ...props 
+}) => (
+  <div 
+    className={`modal__footer ${align !== 'end' ? `modal__footer--${align}` : ''} ${className}`} 
+    {...props}
+  >
+    {children}
+  </div>
+);
+
+// 서브 컴포넌트 연결
+Modal.Header = ModalHeader;
+Modal.Body = ModalBody;
+Modal.Footer = ModalFooter;
+
+// useModal Hook
+export const useModal = (initialState = false) => {
+  const [isOpen, setIsOpen] = React.useState(initialState);
+
+  const open = React.useCallback(() => setIsOpen(true), []);
+  const close = React.useCallback(() => setIsOpen(false), []);
+  const toggle = React.useCallback(() => setIsOpen(prev => !prev), []);
+
+  return {
+    isOpen,
+    open,
+    close,
+    toggle,
+    setIsOpen
+  };
 };
 
+// 추가 export
+export { ModalTitle };
 export default Modal;

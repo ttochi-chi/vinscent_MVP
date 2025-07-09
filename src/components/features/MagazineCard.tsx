@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from '../ui/Card';
+import Card from '../ui/Card';
 import { Magazine, MagazineWithImages } from '@/types';
 import Image from 'next/image';
 
@@ -73,16 +73,16 @@ export const MagazineCard: React.FC<MagazineCardProps> = ({
   // 로딩 스켈레톤
   if (loading) {
     return (
-      <Card className={`magazine-card ${className}`} noHover>
+      <Card className={`magazine-card ${className}`}>
         <div 
           className="skeleton-image"
           style={{ height: imageHeight }}
         />
-        <div className="p-4 space-y-3">
-          <div className="skeleton-text w-3/4 h-5" />
-          <div className="skeleton-text w-full" />
-          <div className="skeleton-text w-2/3" />
-          <div className="skeleton-text w-1/3" />
+        <div className="magazine-card__loading-content">
+          <div className="skeleton-text" />
+          <div className="skeleton-text" />
+          <div className="skeleton-text" />
+          <div className="skeleton-text" />
         </div>
       </Card>
     );
@@ -119,39 +119,39 @@ export const MagazineCard: React.FC<MagazineCardProps> = ({
           />
         ) : (
           <div 
-            className="magazine-card__image bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center"
+            className="magazine-card__image"
             style={{ height: imageHeight }}
           >
             <div className="text-center">
-              <span className="text-gray-400 text-sm mt-1">매거진</span>
+              <span className="">매거진</span>
             </div>
           </div>
         )}
         
         {/* 이미지 개수 표시 (여러 이미지가 있는 경우) */}
         {'images' in magazine && magazine.images && magazine.images.length > 1 && (
-          <div className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+          <div className="magazine-card__image-count">
              {magazine.images.length}
           </div>
         )}
       </div>
 
       {/* 매거진 정보 */}
-      <div className="p-4 space-y-3">
+      <div className="magazine-card__info">
         {/* 매거진 제목 */}
-        <h3 className="magazine-card__title text-lg font-semibold text-gray-900 line-clamp-2">
+        <h3 className="magazine-card__title">
           {magazine.title}
         </h3>
 
         {/* 콘텐츠 미리보기 */}
         {magazine.content && (
-          <p className="text-sm text-gray-600 line-clamp-3">
+          <p className="magazine-card__content-preview">
             {getContentPreview()}
           </p>
         )}
 
         {/* 메타 정보 */}
-        <div className="flex items-center justify-between text-xs text-gray-500">
+        <div className="magazine-card__meta">
           {/* 브랜드 정보 */}
           {showBrand && (
             <span className="font-medium">
@@ -290,7 +290,7 @@ export const MagazineCardExamples = {
         showDate={false}
         previewLength={50}
         imageHeight={160}
-        className="max-w-64"
+        className=""
       />
     );
   },
@@ -321,13 +321,13 @@ export const MagazineCardExamples = {
     ] as MagazineWithImages[];
 
     return (
-      <div className="space-y-6 max-w-md mx-auto">
+      <div className="magazine-card-feed">
         {magazines.map((magazine) => (
           <MagazineCard
             key={magazine.id}
             magazine={magazine}
             onClick={(magazine) => console.log('매거진 상세:', magazine.title)}
-            className="w-full"
+            className=""
             previewLength={150}
           />
         ))}
@@ -357,7 +357,7 @@ export const MagazineCardExamples = {
           placeholder="매거진 검색..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="input-base mb-4"
+          className="input"
         />
         
         <div className="cards-grid cards-grid--magazines">
@@ -371,7 +371,7 @@ export const MagazineCardExamples = {
         </div>
         
         {filteredMagazines.length === 0 && searchTerm && (
-          <p className="text-center text-gray-500 py-8">
+          <p className="magazine-card__no-results">
             "{searchTerm}"에 대한 검색 결과가 없습니다.
           </p>
         )}
@@ -401,9 +401,9 @@ export const MagazineCardExamples = {
         />
         
         {/* 어드민 액션 버튼들 */}
-        <div className="absolute top-2 right-2 flex gap-1">
+        <div className="magazine-card__admin-actions">
           <button 
-            className="btn-base btn-ghost btn-sm p-1 bg-white/80"
+            className="button button--variant-ghost button--size-sm"
             onClick={(e) => {
               e.stopPropagation();
               console.log('매거진 수정');
@@ -413,7 +413,7 @@ export const MagazineCardExamples = {
             ✏️
           </button>
           <button 
-            className="btn-base btn-ghost btn-sm p-1 bg-white/80"
+            className="button button--variant-ghost button--size-sm"
             onClick={(e) => {
               e.stopPropagation();
               console.log('매거진 삭제');
@@ -425,8 +425,8 @@ export const MagazineCardExamples = {
         </div>
         
         {/* 발행 상태 표시 */}
-        <div className="absolute bottom-2 left-2">
-          <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+        <div className="magazine-card__status">
+          <span className="">
             발행됨
           </span>
         </div>

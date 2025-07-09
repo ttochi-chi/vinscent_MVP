@@ -37,7 +37,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   description,
 }) => {
   return (
-    <div className={`main-layout min-h-screen flex flex-col ${className}`}>
+    <div className={`main-layout main-layout--full-height ${className}`}>
       {/* 🔧 HTML Head 메타데이터 (실제로는 Next.js의 Head 컴포넌트 사용) */}
       {title && (
         <title>{title} | Vinscent</title>
@@ -50,12 +50,11 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       {!hideHeader && (
         <Header 
           {...headerProps}
-          className="flex-shrink-0"
         />
       )}
 
       {/* 🔧 메인 콘텐츠 */}
-      <main className="main-layout__content flex-1">
+      <main className="main-layout__content">
         {children}
       </main>
 
@@ -64,7 +63,6 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         <Footer
           {...footerProps}
           minimal={minimalFooter}
-          className="flex-shrink-0"
         />
       )}
     </div>

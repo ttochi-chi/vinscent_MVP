@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from '../ui/Card';
+import Card from '../ui/Card';
 import { Brand } from '@/types';
 import Image from 'next/image';
 
@@ -30,12 +30,12 @@ export const BrandCard: React.FC<BrandCardProps> = ({
   // 로딩 스켈레톤
   if (loading) {
     return (
-      <Card className={`brand-card ${className}`} noHover>
+      <Card className={`brand-card ${className}`}>
         <div 
-          className="skeleton-avatar mx-auto mb-3"
+          className="skeleton-avatar"
           style={{ width: imageSize, height: imageSize }}
         />
-        <div className="skeleton-text w-20 mx-auto" />
+        <div className="skeleton-text" />
       </Card>
     );
   }
@@ -69,10 +69,10 @@ export const BrandCard: React.FC<BrandCardProps> = ({
           />
         ) : (
           <div 
-            className="brand-card__image bg-gray-200 flex items-center justify-center"
+            className="brand-card__image"
             style={{ width: imageSize, height: imageSize }}
           >
-            <span className="text-gray-400 text-xs font-medium">
+            <span className="">
               {brand.title.charAt(0).toUpperCase()}
             </span>
           </div>
@@ -86,7 +86,7 @@ export const BrandCard: React.FC<BrandCardProps> = ({
 
       {/* 브랜드 설명 */}
       {brand.description && (
-        <p className="text-xs text-gray-500 mt-1 text-center line-clamp-2">
+        <p className="text-center">
           {brand.description}
         </p>
       )}
@@ -169,7 +169,7 @@ export const BrandCardExamples = {
     } as Brand;
 
     return (
-      <div className="flex gap-4 items-center">
+      <div className="">
         <BrandCard brand={brand} imageSize={60} />
         <BrandCard brand={brand} imageSize={80} />
         <BrandCard brand={brand} imageSize={100} />
@@ -196,7 +196,7 @@ export const BrandCardExamples = {
               key={brand.id}
               brand={brand}
               onClick={setSelectedBrand}
-              className={selectedBrand?.id === brand.id ? 'ring-2 ring-blue-500' : ''}
+              className={selectedBrand?.id === brand.id ? 'is-selected' : ''}
             />
           ))}
         </div>
@@ -228,9 +228,9 @@ export const BrandCardExamples = {
         />
         
         {/* 어드민 액션 버튼들 */}
-        <div className="absolute top-2 right-2 flex gap-1">
+        <div className="brand-card__admin-actions">
           <button 
-            className="btn-base btn-ghost btn-sm p-1"
+            className="button button--variant-ghost button--size-sm"
             onClick={(e) => {
               e.stopPropagation();
               console.log('브랜드 수정');
@@ -240,7 +240,7 @@ export const BrandCardExamples = {
             ✏️
           </button>
           <button 
-            className="btn-base btn-ghost btn-sm p-1"
+            className="button button--variant-ghost button--size-sm"
             onClick={(e) => {
               e.stopPropagation();
               console.log('브랜드 삭제');

@@ -1,0 +1,80 @@
+/* Error Display 컴포넌트 스타일 */
+
+/* ===== Base Error Display ===== */
+.error-display {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.error-display__icon {
+  font-size: var(--font-size-2xl);
+  flex-shrink: 0;
+}
+
+.error-display__content {
+  flex: 1;
+}
+
+.error-display__message {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+}
+
+.error-display__actions {
+  margin-left: var(--space-4);
+  flex-shrink: 0;
+}
+
+/* ===== Variants ===== */
+.error-display--variant-error {
+  color: var(--color-error);
+  background-color: var(--color-error-light);
+  border-color: var(--color-error);
+}
+
+.error-display--variant-warning {
+  color: var(--color-warning);
+  background-color: var(--color-warning-light);
+  border-color: var(--color-warning);
+}
+
+.error-display--variant-info {
+  color: var(--color-info);
+  background-color: var(--color-info-light);
+  border-color: var(--color-info);
+}
+
+/* ===== Page Error ===== */
+.page-error {
+  min-height: 24rem; /* 384px */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-error__content {
+  text-align: center;
+  max-width: 28rem; /* 448px */
+}
+
+.page-error__icon {
+  font-size: 4rem; /* 64px */
+  margin-bottom: var(--space-4);
+}
+
+.page-error__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.page-error__message {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-6);
+}

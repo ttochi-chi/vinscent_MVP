@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from '../ui/Card';
+import Card from '../ui/Card';
 import { Product, ProductWithImages } from '@/types';
 import Image from 'next/image';
 
@@ -42,12 +42,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   //  로딩 스켈레톤
   if (loading) {
     return (
-      <Card className={`product-card ${className}`} noHover>
+      <Card className={`product-card ${className}`}>
         <div className="skeleton-image" />
-        <div className="p-3 space-y-2">
-          <div className="skeleton-text w-3/4" />
-          <div className="skeleton-text w-1/2" />
-          <div className="skeleton-text w-1/3" />
+        <div className="product-card__loading-content">
+          <div className="skeleton-text" />
+          <div className="skeleton-text" />
+          <div className="skeleton-text" />
         </div>
       </Card>
     );
@@ -77,14 +77,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             }}
           />
         ) : (
-          <div className="product-card__image bg-gray-200 flex items-center justify-center">
-            <span className="text-gray-400 text-sm">이미지 없음</span>
+          <div className="product-card__image">
+            <span className="">이미지 없음</span>
           </div>
         )}
       </div>
 
       {/* 제품 정보 */}
-      <div className="p-3 space-y-2">
+      <div className="product-card__info">
         {/* 제품명 */}
         <h3 className="product-card__title">
           {product.title}
@@ -99,34 +99,34 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* 가격 */}
         {showPrice && (
-          <p className="text-lg font-semibold text-gray-900">
+          <p className="product-card__price">
             {formatPrice(product.price)}
           </p>
         )}
 
         {/* 제품 설명 */}
         {product.description && (
-          <p className="text-sm text-gray-600 line-clamp-2">
+          <p className="product-card__description">
             {product.description}
           </p>
         )}
 
         {/* 향 노트 (선택적) */}
         {showNotes && (product.topNote || product.middleNote || product.baseNote) && (
-          <div className="space-y-1">
+          <div className="product-card__notes">
             {product.topNote && (
-              <p className="text-xs text-gray-500">
-                <span className="font-medium">탑:</span> {product.topNote}
+              <p className="product-card__note">
+                <span className="">탑:</span> {product.topNote}
               </p>
             )}
             {product.middleNote && (
-              <p className="text-xs text-gray-500">
-                <span className="font-medium">미들:</span> {product.middleNote}
+              <p className="product-card__note">
+                <span className="">미들:</span> {product.middleNote}
               </p>
             )}
             {product.baseNote && (
-              <p className="text-xs text-gray-500">
-                <span className="font-medium">베이스:</span> {product.baseNote}
+              <p className="product-card__note">
+                <span className="">베이스:</span> {product.baseNote}
               </p>
             )}
           </div>
@@ -240,7 +240,7 @@ export const ProductCardExamples = {
         product={product}
         showBrand={false}
         showPrice={false}
-        className="max-w-48"
+        className=""
       />
     );
   },
@@ -264,7 +264,7 @@ export const ProductCardExamples = {
         product={product}
         onClick={(product) => console.log('제품 상세:', product)}
         showNotes={true}
-        className="max-w-sm"
+        className=""
       />
     );
   },
@@ -290,7 +290,7 @@ export const ProductCardExamples = {
           placeholder="제품 검색..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="input-base mb-4"
+          className="input"
         />
         
         <div className="cards-grid cards-grid--products">
@@ -304,7 +304,7 @@ export const ProductCardExamples = {
         </div>
         
         {filteredProducts.length === 0 && searchTerm && (
-          <p className="text-center text-gray-500 py-8">
+          <p className="product-card__no-results">
             "{searchTerm}"에 대한 검색 결과가 없습니다.
           </p>
         )}
@@ -331,9 +331,9 @@ export const ProductCardExamples = {
         />
         
         {/* 어드민 액션 버튼들 */}
-        <div className="absolute top-2 right-2 flex gap-1">
+        <div className="product-card__admin-actions">
           <button 
-            className="btn-base btn-ghost btn-sm p-1 bg-white/80"
+            className="button button--variant-ghost button--size-sm"
             onClick={(e) => {
               e.stopPropagation();
               console.log('제품 수정');
@@ -343,7 +343,7 @@ export const ProductCardExamples = {
             ✏️
           </button>
           <button 
-            className="btn-base btn-ghost btn-sm p-1 bg-white/80"
+            className="button button--variant-ghost button--size-sm"
             onClick={(e) => {
               e.stopPropagation();
               console.log('제품 삭제');
@@ -355,8 +355,8 @@ export const ProductCardExamples = {
         </div>
         
         {/* 재고 상태 표시 */}
-        <div className="absolute bottom-2 left-2">
-          <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+        <div className="product-card__status">
+          <span className="">
             재고 있음
           </span>
         </div>

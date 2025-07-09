@@ -1,0 +1,110 @@
+/* Image Upload 컴포넌트 스타일 */
+
+/* ===== Base Image Upload ===== */
+.image-upload {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.image-upload__label {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+.image-upload__area {
+  border: 2px dashed var(--border-medium);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition-colors);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-upload__area:hover {
+  border-color: var(--border-heavy);
+}
+
+.image-upload__area--drag-over {
+  border-color: var(--color-primary);
+  background-color: var(--bg-surface-hover);
+}
+
+.image-upload__area--disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.image-upload__icon {
+  width: var(--space-12);
+  height: var(--space-12);
+  color: var(--text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.image-upload__text {
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+}
+
+.image-upload__text--small {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  margin-top: var(--space-1);
+}
+
+.image-upload__preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .image-upload__preview-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .image-upload__preview-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.image-upload__preview-item {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+}
+
+.image-upload__preview-image {
+  width: 100%;
+  height: 6rem; /* 96px */
+  object-fit: cover;
+}
+
+.image-upload__remove-button {
+  position: absolute;
+  top: var(--space-1);
+  right: var(--space-1);
+  background-color: rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.image-upload__preview-item:hover .image-upload__remove-button {
+  opacity: 1;
+}
+
+.image-upload__error-message {
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+}

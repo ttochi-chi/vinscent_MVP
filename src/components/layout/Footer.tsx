@@ -38,40 +38,37 @@ export const Footer: React.FC<FooterProps> = ({
 
   if (minimal) {
     return (
-      <footer className={`bg-gray-50 border-t border-gray-200 py-6 ${className}`}>
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-sm text-gray-500">
-            © {currentYear} Vinscent. All rights reserved.
-          </p>
+      <footer className={`footer--minimal ${className}`}>
+        <div className="footer__container footer__container--minimal">
+          <p className="footer__copyright-text"/>
         </div>
       </footer>
     );
   }
 
   return (
-    <footer className={`bg-white border-t border-gray-200 ${className}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <footer className={`footer ${className}`}>
+      <div className="footer__container">
         {/* 메인 푸터 콘텐츠 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <div className="footer__grid">
           {/* 브랜드 섹션 */}
-          <div className="lg:col-span-2">
+          <div className="footer__brand-section">
             <Link 
               href="/"
-              className="flex items-center space-x-2 text-xl font-bold text-gray-900 mb-4"
-              style={{ fontFamily: 'var(--font-family-logo)' }}
-            >
+              className="footer__logo-link"
+              >
               <span>Vinscent</span>
             </Link>
-            <p className="text-gray-600 text-sm mb-4 max-w-md">
+            <p className="footer__description">
               브랜드가 직접 운영하는 향수/뷰티 매거진 플랫폼. 
               진정한 브랜드 스토리와 제품을 만나보세요.
             </p>
-            <div className="flex space-x-4">
+            <div className="footer__social-links">
               {footerLinks.social.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-gray-400 hover:text-gray-600 text-sm transition-colors"
+                  className="footer__social-link"
                   target={link.href.startsWith('http') ? '_blank' : undefined}
                   rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 >
@@ -83,13 +80,13 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* 제품 링크 */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-4">제품</h3>
-            <ul className="space-y-2">
+            <h3 className="footer__heading">제품</h3>
+            <ul className="footer__list">
               {footerLinks.product.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                    className="footer__link"
                   >
                     {link.label}
                   </Link>
@@ -100,13 +97,13 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* 회사 정보 */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-4">회사</h3>
-            <ul className="space-y-2">
+            <h3 className="footer__heading">회사</h3>
+            <ul className="footer__list">
               {footerLinks.company.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                    className="footer__link"
                   >
                     {link.label}
                   </Link>
@@ -117,13 +114,13 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* 고객지원 */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-4">지원</h3>
-            <ul className="space-y-2">
+            <h3 className="footer__heading">지원</h3>
+            <ul className="footer__list">
               {footerLinks.support.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                    className="footer__link"
                   >
                     {link.label}
                   </Link>
@@ -134,12 +131,10 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* 하단 저작권 */}
-        <div className="border-t border-gray-200 mt-8 pt-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-            <p className="text-sm text-gray-500">
-              © {currentYear} Vinscent. All rights reserved.
-            </p>
-            <p className="text-sm text-gray-500 mt-2 md:mt-0">
+        <div className="footer__bottom">
+          <div className="footer__bottom-content">
+            <p className="footer__copyright-text"/>
+            <p className="footer__tagline">
               Made with Like for fragrance lovers
             </p>
           </div>

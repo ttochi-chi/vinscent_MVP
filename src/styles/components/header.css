@@ -46,7 +46,7 @@
   align-items: center;
   font-family: var(--font-family-logo);
   font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-medium);
   color: var(--text-primary);
   text-decoration: none;
   transition: var(--transition-transform);

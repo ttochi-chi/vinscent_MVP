@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import Providers from './providers'; // Import the Providers component
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -31,9 +32,11 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       </head>
       <body className={`${inter.className} antialiased`}>
-        <div id="__next" className="min-h-screen">
-          {children}
-        </div>
+        <Providers> {/* Wrap children with Providers */}
+          <div id="__next" className="min-h-screen">
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   );
