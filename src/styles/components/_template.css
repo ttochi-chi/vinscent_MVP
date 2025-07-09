@@ -1,0 +1,129 @@
+/*컴포넌트 템플릿*/
+/* ===== Base ===== */
+.component-name {
+  /* 레이아웃 */
+  display: block;
+  position: relative;
+  
+  /* 박스 모델 */
+  width: 100%;
+  padding: var(--space-4);
+  margin: 0;
+  
+  /* 시각적 스타일 */
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  
+  /* 타이포그래피 */
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  
+  /* 인터랙션 */
+  transition: var(--transition-all);
+  cursor: pointer;
+}
+
+/* ===== Elements ===== */
+.component-name__element {
+  /* Element 스타일 */
+}
+
+.component-name__title {
+  /* Title element 스타일 */
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-2);
+}
+
+.component-name__content {
+  /* Content element 스타일 */
+}
+
+/* ===== Modifiers ===== */
+
+/* Size Variants */
+.component-name--size-sm {
+  padding: var(--space-2);
+  font-size: var(--font-size-sm);
+}
+
+.component-name--size-lg {
+  padding: var(--space-6);
+  font-size: var(--font-size-lg);
+}
+
+/* Style Variants */
+.component-name--variant-primary {
+  background-color: var(--color-primary);
+  color: var(--text-on-primary);
+  border-color: var(--color-primary);
+}
+
+.component-name--variant-secondary {
+  background-color: transparent;
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+
+/* ===== States ===== */
+
+/* Hover State */
+.component-name:hover {
+  /* Hover 스타일 */
+}
+
+/* Active State */
+.component-name:active {
+  /* Active 스타일 */
+}
+
+/* Focus State */
+.component-name:focus {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+/* Disabled State */
+.component-name:disabled,
+.component-name.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Loading State */
+.component-name.is-loading {
+  /* Loading 스타일 */
+}
+
+/* Selected State */
+.component-name.is-selected {
+  /* Selected 스타일 */
+}
+
+/* ===== Responsive ===== */
+
+/* 태블릿 이상 */
+@media (min-width: 768px) {
+  .component-name {
+    /* 태블릿 스타일 */
+  }
+}
+
+/* 데스크톱 이상 */
+@media (min-width: 1024px) {
+  .component-name {
+    /* 데스크톱 스타일 */
+  }
+}
+
+/* ===== Animations ===== */
+@keyframes component-name-animation {
+  from {
+    /* 시작 상태 */
+  }
+  to {
+    /* 종료 상태 */
+  }
+}

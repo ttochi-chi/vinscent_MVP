@@ -1,52 +1,50 @@
-@import url('../styles/design-tokens.css');
-@import url('../styles/components.css');
+/* 메인 CSS import */
+@import '../styles/main.css';
 
-/* Tailwind CSS */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-* {
-  box-sizing: border-box;
+/* Next.js Layout Shift 방지 */
+html {
+  -webkit-tap-highlight-color: transparent;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* Next.js Image 컴포넌트 기본 스타일 */
+img {
+  max-width: 100%;
+  height: auto;
 }
 
-body {
-  font-family: var(--font-family-base);
-  background-color: var(--bg-page);
-  color: var(--text-primary);
-  margin: 0;
-  padding: 0;
+/* 개발 모드 인디케이터 스타일 */
+.development-indicator {
+  position: fixed;
+  bottom: var(--space-4);
+  right: var(--space-4);
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-warning);
+  color: var(--text-on-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-full);
+  z-index: var(--z-index-tooltip);
 }
 
-/* 접근성을 위한 스크린 리더 전용 클래스 */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+/* 페이지 전환 애니메이션 */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
-/* Tailwind에서 제공하지 않는 유틸리티 */
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: var(--transition-all);
 }
 
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.page-transition-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: var(--transition-all);
 }

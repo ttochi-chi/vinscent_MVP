@@ -1,0 +1,300 @@
+/* Card 컴포넌트 스타일*/
+
+/* ===== Base Card ===== */
+.card {
+  /* 구조 */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  
+  /* 시각 */
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--card-border-radius);
+  overflow: hidden;
+  
+  /* 기본값 */
+  padding: var(--card-padding-md);
+  gap: var(--card-gap-md);
+  
+  /* 인터랙션 */
+  transition: var(--transition-all);
+}
+
+/* ===== Elements ===== */
+
+/* Card Header */
+.card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+/* Card Title */
+.card__title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+  line-height: var(--line-height-tight);
+}
+
+/* Card Subtitle */
+.card__subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: var(--space-1) 0 0 0;
+}
+
+/* Card Media */
+.card__media {
+  position: relative;
+  margin: calc(var(--card-padding-md) * -1);
+  margin-bottom: 0;
+  overflow: hidden;
+  background-color: var(--bg-surface-hover);
+}
+
+.card__media--bottom {
+  margin: 0 calc(var(--card-padding-md) * -1) calc(var(--card-padding-md) * -1) calc(var(--card-padding-md) * -1);
+}
+
+.card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Card Content */
+.card__content {
+  flex: 1;
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  line-height: var(--line-height-normal);
+}
+
+/* Card Actions */
+.card__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: auto;
+}
+
+.card__actions--end {
+  justify-content: flex-end;
+}
+
+/* Card Badge */
+.card__badge {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-on-primary);
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+/* Card Overlay */
+.card__overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: var(--transition-all);
+}
+
+/* ===== Size Variants ===== */
+.card--size-sm {
+  padding: var(--card-padding-sm);
+  gap: var(--card-gap-sm);
+}
+
+.card--size-sm .card__title {
+  font-size: var(--font-size-lg);
+}
+
+.card--size-sm .card__media {
+  margin: calc(var(--card-padding-sm) * -1);
+  margin-bottom: 0;
+}
+
+.card--size-lg {
+  padding: var(--card-padding-lg);
+  gap: var(--card-gap-lg);
+}
+
+.card--size-lg .card__title {
+  font-size: var(--font-size-2xl);
+}
+
+.card--size-lg .card__media {
+  margin: calc(var(--card-padding-lg) * -1);
+  margin-bottom: 0;
+}
+
+/* ===== Style Variants ===== */
+
+/* Elevated */
+.card--variant-elevated {
+  border: none;
+  box-shadow: var(--card-shadow);
+}
+
+.card--variant-elevated:hover {
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* Outlined */
+.card--variant-outlined {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+/* Filled */
+.card--variant-filled {
+  background-color: var(--bg-surface-hover);
+  border-color: transparent;
+}
+
+/* ===== Special Modifiers ===== */
+
+/* Horizontal Card */
+.card--horizontal {
+  flex-direction: row;
+}
+
+.card--horizontal .card__media {
+  width: 40%;
+  margin: calc(var(--card-padding-md) * -1);
+  margin-right: 0;
+}
+
+.card--horizontal .card__content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap-md);
+}
+
+/* Clickable Card */
+.card--clickable {
+  cursor: pointer;
+}
+
+.card--clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.card--clickable:hover .card__overlay {
+  opacity: 0.1;
+}
+
+.card--clickable:active {
+  transform: translateY(0);
+}
+
+/* ===== States ===== */
+
+/* Selected */
+.card.is-selected {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+/* Loading */
+.card.is-loading {
+  pointer-events: none;
+}
+
+.card.is-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--bg-surface);
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== Card Grid ===== */
+.card-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(var(--card-columns), 1fr);
+}
+
+/* ===== Product Card ===== */
+.card--product {
+  /* 제품 카드 전용 스타일 */
+}
+
+.card--product .card__price {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin-top: var(--space-2);
+}
+
+.card--product .card__price-original {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-muted);
+  text-decoration: line-through;
+  margin-right: var(--space-2);
+}
+
+.card--product .card__discount {
+  color: var(--color-error);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ===== Magazine Card ===== */
+.card--magazine {
+  /* 매거진 카드 전용 스타일 */
+}
+
+.card--magazine .card__category {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  margin-bottom: var(--space-1);
+}
+
+.card--magazine .card__author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-top: var(--space-3);
+}
+
+.card--magazine .card__author-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-full);
+  background-color: var(--bg-surface-hover);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 767px) {
+  .card--horizontal {
+    flex-direction: column;
+  }
+  
+  .card--horizontal .card__media {
+    width: 100%;
+    margin: calc(var(--card-padding-md) * -1);
+    margin-bottom: 0;
+  }
+}

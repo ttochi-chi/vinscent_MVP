@@ -1,0 +1,145 @@
+/*컴포넌트 토큰 (Component Tokens)*/
+:root {
+  /* ===== Button ===== */
+  --button-height-xs: 1.75rem;    /* 28px */
+  --button-height-sm: 2rem;       /* 32px */
+  --button-height-md: 2.5rem;     /* 40px */
+  --button-height-lg: 3rem;       /* 48px */
+  --button-height-xl: 3.5rem;     /* 56px */
+  
+  --button-padding-x-xs: var(--space-2);
+  --button-padding-x-sm: var(--space-3);
+  --button-padding-x-md: var(--space-4);
+  --button-padding-x-lg: var(--space-5);
+  --button-padding-x-xl: var(--space-6);
+  
+  --button-font-size-xs: var(--font-size-xs);
+  --button-font-size-sm: var(--font-size-sm);
+  --button-font-size-md: var(--font-size-base);
+  --button-font-size-lg: var(--font-size-lg);
+  --button-font-size-xl: var(--font-size-xl);
+  
+  --button-font-weight: var(--font-weight-medium);
+  --button-border-radius: var(--radius-md);
+  --button-border-width: 2px;
+  
+  /* ===== Card ===== */
+  --card-padding-sm: var(--space-3);
+  --card-padding-md: var(--space-4);
+  --card-padding-lg: var(--space-6);
+  
+  --card-gap-sm: var(--space-2);
+  --card-gap-md: var(--space-3);
+  --card-gap-lg: var(--space-4);
+  
+  --card-border-radius: var(--radius-lg);
+  --card-border-width: 1px;
+  --card-shadow: var(--shadow-sm);
+  --card-shadow-hover: var(--shadow-md);
+  
+  /* ===== Input ===== */
+  --input-height-sm: 2rem;        /* 32px */
+  --input-height-md: 2.5rem;      /* 40px */
+  --input-height-lg: 3rem;        /* 48px */
+  
+  --input-padding-x: var(--space-3);
+  --input-padding-y: var(--space-2);
+  
+  --input-font-size-sm: var(--font-size-sm);
+  --input-font-size-md: var(--font-size-base);
+  --input-font-size-lg: var(--font-size-lg);
+  
+  --input-border-width: 1px;
+  --input-border-radius: var(--radius-md);
+  --input-focus-ring-width: 2px;
+  --input-focus-ring-offset: 2px;
+  
+  /* ===== Modal ===== */
+  --modal-padding-sm: var(--space-4);
+  --modal-padding-md: var(--space-6);
+  --modal-padding-lg: var(--space-8);
+  
+  --modal-border-radius: var(--radius-xl);
+  --modal-shadow: var(--shadow-2xl);
+  
+  --modal-width-sm: 400px;
+  --modal-width-md: 600px;
+  --modal-width-lg: 800px;
+  --modal-width-xl: 1000px;
+  --modal-width-full: calc(100vw - var(--space-8));
+  
+  --modal-backdrop-bg: rgba(0, 0, 0, 0.5);
+  
+  /* ===== Header ===== */
+  --header-height: 4rem;          /* 64px */
+  --header-height-mobile: 3.5rem; /* 56px */
+  --header-padding-x: var(--space-4);
+  --header-shadow: var(--shadow-sm);
+  --header-z-index: var(--z-index-sticky);
+  
+  /* ===== Sidebar ===== */
+  --sidebar-width: 16rem;         /* 256px */
+  --sidebar-width-collapsed: 4rem; /* 64px */
+  --sidebar-padding: var(--space-4);
+  --sidebar-item-height: 2.5rem;  /* 40px */
+  --sidebar-item-padding-x: var(--space-3);
+  
+  /* ===== Badge ===== */
+  --badge-height-sm: 1.25rem;     /* 20px */
+  --badge-height-md: 1.5rem;      /* 24px */
+  --badge-height-lg: 1.75rem;     /* 28px */
+  
+  --badge-padding-x-sm: var(--space-1-5);
+  --badge-padding-x-md: var(--space-2);
+  --badge-padding-x-lg: var(--space-2-5);
+  
+  --badge-font-size-sm: var(--font-size-xs);
+  --badge-font-size-md: var(--font-size-sm);
+  --badge-font-size-lg: var(--font-size-base);
+  
+  --badge-font-weight: var(--font-weight-medium);
+  --badge-border-radius: var(--radius-full);
+  
+  /* ===== Toast ===== */
+  --toast-padding: var(--space-4);
+  --toast-gap: var(--space-3);
+  --toast-border-radius: var(--radius-lg);
+  --toast-shadow: var(--shadow-lg);
+  --toast-width: 360px;
+  
+  /* ===== Table ===== */
+  --table-cell-padding-x: var(--space-4);
+  --table-cell-padding-y: var(--space-3);
+  --table-header-font-weight: var(--font-weight-semibold);
+  --table-border-width: 1px;
+  
+  /* ===== Tooltip ===== */
+  --tooltip-padding-x: var(--space-3);
+  --tooltip-padding-y: var(--space-2);
+  --tooltip-font-size: var(--font-size-sm);
+  --tooltip-border-radius: var(--radius-md);
+  --tooltip-arrow-size: 6px;
+  
+  /* ===== Dropdown ===== */
+  --dropdown-padding: var(--space-1);
+  --dropdown-item-padding-x: var(--space-3);
+  --dropdown-item-padding-y: var(--space-2);
+  --dropdown-item-height: 2.25rem; /* 36px */
+  --dropdown-border-radius: var(--radius-lg);
+  --dropdown-shadow: var(--shadow-lg);
+  --dropdown-min-width: 12rem;    /* 192px */
+  
+  /* ===== Avatar ===== */
+  --avatar-size-xs: 1.5rem;       /* 24px */
+  --avatar-size-sm: 2rem;         /* 32px */
+  --avatar-size-md: 2.5rem;       /* 40px */
+  --avatar-size-lg: 3rem;         /* 48px */
+  --avatar-size-xl: 4rem;         /* 64px */
+  --avatar-border-radius: var(--radius-full);
+  
+  /* ===== Form ===== */
+  --form-group-gap: var(--space-6);
+  --form-label-margin-bottom: var(--space-2);
+  --form-help-text-margin-top: var(--space-1);
+  --form-error-margin-top: var(--space-1);
+}

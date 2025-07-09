@@ -1,0 +1,104 @@
+/*시맨틱 토큰 (Semantic Tokens)*/
+:root {
+  /* ===== Brand Colors ===== */
+  --color-primary: var(--color-purple-500);
+  --color-primary-hover: var(--color-purple-600);
+  --color-primary-active: var(--color-purple-700);
+  --color-primary-light: var(--color-purple-100);
+  
+  --color-secondary: var(--color-gray-500);
+  --color-secondary-hover: var(--color-gray-600);
+  --color-secondary-active: var(--color-gray-700);
+  --color-secondary-light: var(--color-gray-100);
+  
+  /* ===== Text Colors ===== */
+  --text-primary: var(--color-gray-900);
+  --text-secondary: var(--color-gray-700);
+  --text-muted: var(--color-gray-500);
+  --text-disabled: var(--color-gray-400);
+  --text-on-primary: var(--color-white);
+  --text-on-secondary: var(--color-white);
+  
+  /* ===== Background Colors ===== */
+  --bg-page: var(--color-gray-50);
+  --bg-surface: var(--color-white);
+  --bg-surface-hover: var(--color-gray-50);
+  --bg-surface-active: var(--color-gray-100);
+  --bg-input: var(--color-gray-100);
+  --bg-input-hover: var(--color-gray-200);
+  --bg-input-focus: var(--color-white);
+  
+  /* ===== Border Colors ===== */
+  --border-light: var(--color-gray-200);
+  --border-medium: var(--color-gray-300);
+  --border-heavy: var(--color-gray-400);
+  --border-focus: var(--color-primary);
+  --border-error: var(--color-red-500);
+  
+  /* ===== Status Colors ===== */
+  --color-success: var(--color-green-500);
+  --color-success-hover: var(--color-green-600);
+  --color-success-light: #dcfce7;
+  
+  --color-warning: var(--color-amber-500);
+  --color-warning-hover: var(--color-amber-600);
+  --color-warning-light: #fef3c7;
+  
+  --color-error: var(--color-red-500);
+  --color-error-hover: var(--color-red-600);
+  --color-error-light: #fee2e2;
+  
+  --color-info: var(--color-blue-500);
+  --color-info-hover: var(--color-blue-600);
+  --color-info-light: #dbeafe;
+  
+  /* ===== Layout Spacing ===== */
+  --space-page-padding: var(--space-4);
+  --space-section-gap: var(--space-12);
+  --space-element-gap: var(--space-6);
+  --space-component-gap: var(--space-4);
+  --space-text-gap: var(--space-3);
+  
+  /* ===== Common Transitions ===== */
+  --transition-colors: color var(--transition-fast), 
+                      background-color var(--transition-fast), 
+                      border-color var(--transition-fast);
+  --transition-transform: transform var(--transition-normal);
+  --transition-shadow: box-shadow var(--transition-normal);
+  --transition-all: all var(--transition-normal);
+}
+
+/* ===== 다크 모드 시맨틱 토큰 ===== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Text Colors */
+    --text-primary: var(--color-gray-100);
+    --text-secondary: var(--color-gray-300);
+    --text-muted: var(--color-gray-500);
+    --text-disabled: var(--color-gray-600);
+    
+    /* Background Colors */
+    --bg-page: var(--color-gray-900);
+    --bg-surface: var(--color-gray-800);
+    --bg-surface-hover: var(--color-gray-700);
+    --bg-surface-active: var(--color-gray-600);
+    --bg-input: var(--color-gray-700);
+    --bg-input-hover: var(--color-gray-600);
+    --bg-input-focus: var(--color-gray-800);
+    
+    /* Border Colors */
+    --border-light: var(--color-gray-700);
+    --border-medium: var(--color-gray-600);
+    --border-heavy: var(--color-gray-500);
+  }
+}
+
+/* ===== 테마 변형을 위한 클래스 ===== */
+.theme-dark {
+  --text-primary: var(--color-gray-100);
+  --text-secondary: var(--color-gray-300);
+  --bg-page: var(--color-gray-900);
+  --bg-surface: var(--color-gray-800);
+  --border-light: var(--color-gray-700);
+  --border-medium: var(--color-gray-600);
+}

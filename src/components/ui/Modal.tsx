@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
-import { Button } from './Button';
+import Button from './Button';
 
 //TypeScript 인터페이스 정의
 export interface ModalProps {
