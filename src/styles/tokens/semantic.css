@@ -33,7 +33,7 @@
   --border-medium: var(--color-gray-300);
   --border-heavy: var(--color-gray-400);
   --border-focus: var(--color-primary);
-  --border-error: var(--color-red-500);
+  --border-error: var(--color-gray-500);
   
   /* ===== Status Colors ===== */
   --color-success: var(--color-gray-500);

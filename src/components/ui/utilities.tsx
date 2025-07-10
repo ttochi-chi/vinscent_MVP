@@ -1,14 +1,22 @@
 import React, { useState, useRef } from 'react';
-import { Upload, AlertCircle, RefreshCw, X, Info } from 'lucide-react'; // Added Info icon
-import Button from './Button';
-import Card from './Card'; // Import Card for CardSkeleton
+import { Upload, AlertCircle, RefreshCw, X, Info, Check } from 'lucide-react';
+
+/**
+ * 🔧 메소드 추적 기반 개선 완료:
+ * - Loading 컴포넌트: size → loadingSize로 prop 이름 변경
+ * - CardSkeleton: type prop 추가
+ * - utilities 내보내기 패턴 정리
+ * 
+ * 사용처: test/page.tsx에서 실제 호출되는 모든 컴포넌트
+ * 근원지: TypeScript 에러 및 props 불일치 문제
+ */
 
 // ==================== LOADING COMPONENTS ====================
 
 export interface LoadingProps {
   /** 로딩 타입 */
   variant?: 'spinner' | 'skeleton' | 'pulse' | 'dots';
-  /** 크기 */
+  /** 크기 - loadingSize로 변경하여 HTML size 속성과 충돌 방지 */
   loadingSize?: 'sm' | 'md' | 'lg';
   /** 로딩 메시지 */
   message?: string;
@@ -35,6 +43,7 @@ export const Loading: React.FC<LoadingProps> = ({
         return (
           <div className="loading__icon-wrapper" role="status">
             <span className="sr-only">로딩 중...</span>
+            <div className="loading__spinner" />
           </div>
         );
       case 'dots':
@@ -44,14 +53,15 @@ export const Loading: React.FC<LoadingProps> = ({
               <div
                 key={i}
                 className="loading__dot"
+                style={{ animationDelay: `${i * 0.15}s` }}
               />
             ))}
           </div>
         );
       case 'skeleton':
-        return <div className="loading__icon-wrapper" />;
+        return <div className="loading__skeleton" />;
       case 'pulse':
-        return <div className="loading__icon-wrapper" />;
+        return <div className="loading__pulse" />;
       default:
         return null;
     }
@@ -76,30 +86,30 @@ export const PageLoading: React.FC<{ message?: string }> = ({
   </div>
 );
 
-// 🔧 카드 스켈레톤 컴포넌트들
+// 🔧 카드 스켈레톤 컴포넌트 - type prop 추가
 export const CardSkeleton: React.FC<{ type?: 'brand' | 'product' | 'magazine' }> = ({ 
   type = 'brand' 
 }) => (
-  <div className="card-skeleton">
+  <div className={`card-skeleton card-skeleton--${type}`}>
     {type === 'brand' && (
       <>
-        <div className="card-skeleton__avatar" />
-        <div className="card-skeleton__text" />
+        <div className="skeleton skeleton-avatar" />
+        <div className="skeleton skeleton-text" />
       </>
     )}
     {type === 'product' && (
       <>
-        <div className="card-skeleton__image" />
-        <div className="card-skeleton__text" />
-        <div className="card-skeleton__text" />
+        <div className="skeleton skeleton-image" />
+        <div className="skeleton skeleton-text" />
+        <div className="skeleton skeleton-text skeleton-text--short" />
       </>
     )}
     {type === 'magazine' && (
       <>
-        <div className="card-skeleton__image" />
-        <div className="card-skeleton__text" />
-        <div className="card-skeleton__text" />
-        <div className="card-skeleton__text" />
+        <div className="skeleton skeleton-image skeleton-image--tall" />
+        <div className="skeleton skeleton-text" />
+        <div className="skeleton skeleton-text" />
+        <div className="skeleton skeleton-text skeleton-text--short" />
       </>
     )}
   </div>
@@ -136,15 +146,14 @@ export const ErrorDisplay: React.FC<ErrorProps> = ({
         <p className="error-display__message">{message}</p>
       </div>
       {showRetry && onRetry && (
-        <Button
-          variant="ghost"
-          size="sm"
-          leftIcon={RefreshCw}
+        <button
+          type="button"
           onClick={onRetry}
-          className="error-display__actions"
+          className="error-display__retry-button"
         >
+          <RefreshCw size={16} />
           재시도
-        </Button>
+        </button>
       )}
     </div>
   );
@@ -162,13 +171,18 @@ export const PageError: React.FC<{
 }) => (
   <div className="page-error">
     <div className="page-error__content">
-      <AlertCircle className="page-error__icon" /> {/* Using AlertCircle for general error icon */}
+      <AlertCircle className="page-error__icon" size={48} />
       <h2 className="page-error__title">{title}</h2>
       <p className="page-error__message">{message}</p>
       {onRetry && (
-        <Button variant="primary" onClick={onRetry} leftIcon={RefreshCw}>
+        <button
+          type="button"
+          onClick={onRetry}
+          className="button button--variant-primary"
+        >
+          <RefreshCw size={16} />
           다시 시도
-        </Button>
+        </button>
       )}
     </div>
   </div>
@@ -231,12 +245,18 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     try {
       // 실제로는 Cloudinary API 호출
       const uploadPromises = filesToUpload.map(async (file) => {
-        // 임시 로컬 URL 생성 (실제로는 Cloudinary 업로드)
-        return new Promise<string>((resolve) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result as string);
-          reader.readAsDataURL(file);
+        // API 호출 시뮬레이션
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
         });
+        
+        if (!response.ok) throw new Error('Upload failed');
+        const data = await response.json();
+        return data.imageUrl;
       });
 
       const uploadedUrls = await Promise.all(uploadPromises);
@@ -310,7 +330,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
             accept={accept}
             multiple={!single && maxImages > 1}
             onChange={(e) => handleFileSelect(e.target.files)}
-            className="hidden"
+            className="sr-only"
             disabled={disabled}
           />
           
@@ -318,7 +338,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
             <Loading variant="spinner" message="업로드 중..." />
           ) : (
             <>
-              <Upload className="image-upload__icon" />
+              <Upload className="image-upload__icon" size={32} />
               <p className="image-upload__text">
                 클릭하거나 파일을 드래그하여 업로드
               </p>
@@ -340,15 +360,14 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
                 alt={`업로드된 이미지 ${index + 1}`}
                 className="image-upload__preview-image"
               />
-              <Button
-                variant="ghost"
-                size="sm"
-                iconOnly
-                rightIcon={X}
+              <button
+                type="button"
                 onClick={() => removeImage(index)}
                 className="image-upload__remove-button"
                 aria-label="이미지 삭제"
-              />
+              >
+                <X size={16} />
+              </button>
             </div>
           ))}
         </div>
@@ -362,73 +381,199 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   );
 };
 
+// ==================== NOTIFICATION COMPONENTS (추가) ====================
+
+export interface NotificationProps {
+  /** 알림 타입 */
+  type?: 'success' | 'error' | 'warning' | 'info';
+  /** 제목 */
+  title?: string;
+  /** 메시지 */
+  message: string;
+  /** 자동 닫힘 시간 (ms) */
+  duration?: number;
+  /** 닫기 핸들러 */
+  onClose?: () => void;
+  /** 추가 CSS 클래스 */
+  className?: string;
+}
+
+export const Notification: React.FC<NotificationProps> = ({
+  type = 'info',
+  title,
+  message,
+  duration = 5000,
+  onClose,
+  className = '',
+}) => {
+  const [visible, setVisible] = useState(true);
+
+  React.useEffect(() => {
+    if (duration && duration > 0) {
+      const timer = setTimeout(() => {
+        setVisible(false);
+        onClose?.();
+      }, duration);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [duration, onClose]);
+
+  if (!visible) return null;
+
+  const IconComponent = {
+    success: Check,
+    error: AlertCircle,
+    warning: AlertCircle,
+    info: Info,
+  }[type];
+
+  return (
+    <div className={`notification notification--${type} ${className}`}>
+      <IconComponent className="notification__icon" size={20} />
+      <div className="notification__content">
+        {title && <h4 className="notification__title">{title}</h4>}
+        <p className="notification__message">{message}</p>
+      </div>
+      {onClose && (
+        <button
+          type="button"
+          onClick={() => {
+            setVisible(false);
+            onClose();
+          }}
+          className="notification__close"
+          aria-label="닫기"
+        >
+          <X size={16} />
+        </button>
+      )}
+    </div>
+  );
+};
+
+// ==================== EMPTY STATE COMPONENT (추가) ====================
+
+export interface EmptyStateProps {
+  /** 제목 */
+  title?: string;
+  /** 설명 */
+  description?: string;
+  /** 아이콘 */
+  icon?: React.ElementType;
+  /** 액션 버튼 */
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
+  /** 추가 CSS 클래스 */
+  className?: string;
+}
+
+export const EmptyState: React.FC<EmptyStateProps> = ({
+  title = '데이터가 없습니다',
+  description,
+  icon: Icon,
+  action,
+  className = '',
+}) => (
+  <div className={`empty-state ${className}`}>
+    {Icon && <Icon className="empty-state__icon" size={48} />}
+    <h3 className="empty-state__title">{title}</h3>
+    {description && (
+      <p className="empty-state__description">{description}</p>
+    )}
+    {action && (
+      <button
+        type="button"
+        onClick={action.onClick}
+        className="button button--variant-primary"
+      >
+        {action.label}
+      </button>
+    )}
+  </div>
+);
+
 // ==================== 사용 예시 ====================
 
-export const UtilityExamples = {
-  // 로딩 상태들
-  loadingStates: () => (
-    <div className="space-y-6">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Loading variant="spinner" loadingSize="sm" message="작은 스피너" />
-        <Loading variant="spinner" loadingSize="md" message="중간 스피너" />
-        <Loading variant="spinner" loadingSize="lg" message="큰 스피너" />
-        <Loading variant="dots" loadingSize="md" message="도트 로딩" />
-      </div>
-      
-      <PageLoading message="데이터를 불러오는 중..." />
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <CardSkeleton type="brand" />
-        <CardSkeleton type="product" />
-        <CardSkeleton type="magazine" />
-      </div>
-    </div>
-  ),
+export default function UtilityComponentsDemo() {
+  const [images, setImages] = useState<string[]>([]);
+  const [showNotification, setShowNotification] = useState(false);
 
-  // 에러 상태들
-  errorStates: () => (
-    <div className="space-y-4">
-      <ErrorDisplay 
-        message="데이터를 불러올 수 없습니다." 
-        showRetry 
-        onRetry={() => console.log('재시도')}
-      />
-      <ErrorDisplay 
-        variant="warning"
-        message="일부 기능이 제한될 수 있습니다." 
-      />
-      <ErrorDisplay 
-        variant="info"
-        message="새로운 업데이트가 있습니다." 
-      />
+  return (
+    <div className="space-y-8 p-8">
+      <h1 className="text-2xl font-bold">Utility Components Demo</h1>
       
-      <PageError 
-        onRetry={() => console.log('페이지 재시도')}
-      />
-    </div>
-  ),
+      {/* Loading States */}
+      <section>
+        <h2 className="text-xl font-semibold mb-4">Loading States</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Loading variant="spinner" loadingSize="sm" message="작은 스피너" />
+          <Loading variant="dots" loadingSize="md" message="도트 로딩" />
+          <CardSkeleton type="brand" />
+          <CardSkeleton type="product" />
+        </div>
+      </section>
 
-  // 이미지 업로드
-  imageUpload: () => {
-    const [images, setImages] = React.useState<string[]>([]);
-    const [singleImage, setSingleImage] = React.useState<string[]>([]);
-    
-    return (
-      <div className="space-y-6">
+      {/* Error States */}
+      <section>
+        <h2 className="text-xl font-semibold mb-4">Error States</h2>
+        <div className="space-y-4">
+          <ErrorDisplay 
+            message="데이터를 불러올 수 없습니다." 
+            showRetry 
+            onRetry={() => console.log('재시도')}
+          />
+          <ErrorDisplay 
+            variant="warning"
+            message="일부 기능이 제한될 수 있습니다."
+          />
+        </div>
+      </section>
+
+      {/* Image Upload */}
+      <section>
+        <h2 className="text-xl font-semibold mb-4">Image Upload</h2>
         <ImageUpload
-          label="제품 이미지 (다중)"
           value={images}
           onChange={setImages}
           maxImages={3}
+          label="제품 이미지"
         />
-        
-        <ImageUpload
-          label="프로필 이미지 (단일)"
-          value={singleImage}
-          onChange={setSingleImage}
-          single={true}
+      </section>
+
+      {/* Notifications */}
+      <section>
+        <h2 className="text-xl font-semibold mb-4">Notifications</h2>
+        <button
+          onClick={() => setShowNotification(true)}
+          className="button button--variant-primary"
+        >
+          알림 표시
+        </button>
+        {showNotification && (
+          <Notification
+            type="success"
+            title="성공!"
+            message="작업이 완료되었습니다."
+            onClose={() => setShowNotification(false)}
+          />
+        )}
+      </section>
+
+      {/* Empty State */}
+      <section>
+        <h2 className="text-xl font-semibold mb-4">Empty State</h2>
+        <EmptyState
+          title="아직 제품이 없습니다"
+          description="첫 번째 제품을 등록해보세요"
+          action={{
+            label: '제품 등록하기',
+            onClick: () => console.log('제품 등록'),
+          }}
         />
-      </div>
-    );
-  },
-};
+      </section>
+    </div>
+  );
+}

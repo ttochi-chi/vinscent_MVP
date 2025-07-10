@@ -1,0 +1,529 @@
+/**
+ * 🔧 메소드 추적 기반 개선 완료:
+ * - utilities.tsx에서 사용되는 모든 클래스 추가
+ * - 기존 skeleton 클래스와 통합
+ * - BEM 패턴 일관성 유지
+ * 
+ * 사용처: utilities.tsx 컴포넌트들
+ * 근원지: 누락된 CSS 클래스로 인한 스타일 미적용
+ */
+
+/* ===== LOADING COMPONENT ===== */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+/* Loading Icon Wrapper */
+.loading__icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Loading Size Variants */
+.loading--size-sm .loading__icon-wrapper {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.loading--size-md .loading__icon-wrapper {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.loading--size-lg .loading__icon-wrapper {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+/* Spinner Variant */
+.loading__spinner {
+  width: 100%;
+  height: 100%;
+  border: 3px solid var(--border-light);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Dots Variant */
+.loading--variant-dots .loading__icon-wrapper {
+  gap: var(--space-1);
+}
+
+.loading__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: var(--color-primary);
+  border-radius: 50%;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+/* Skeleton Variant */
+.loading__skeleton {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--bg-surface-hover) 0%,
+    var(--bg-surface) 50%,
+    var(--bg-surface-hover) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Pulse Variant */
+.loading__pulse {
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-primary);
+  border-radius: 50%;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Loading Message */
+.loading__message {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ===== PAGE LOADING ===== */
+.page-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  width: 100%;
+}
+
+/* ===== CARD SKELETON ===== */
+.card-skeleton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+}
+
+/* 기존 skeleton 클래스와 통합 */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-surface-hover) 0%,
+    var(--bg-surface) 50%,
+    var(--bg-surface-hover) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-md);
+}
+
+.skeleton-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 200px;
+  border-radius: var(--radius-md);
+}
+
+.skeleton-image--tall {
+  height: 240px;
+}
+
+.skeleton-text {
+  width: 100%;
+  height: 1rem;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-text--short {
+  width: 60%;
+}
+
+/* Card Type Variants */
+.card-skeleton--brand {
+  text-align: center;
+  min-height: 180px;
+}
+
+.card-skeleton--product {
+  min-height: 320px;
+}
+
+.card-skeleton--magazine {
+  min-height: 380px;
+}
+
+/* ===== ERROR DISPLAY ===== */
+.error-display {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid;
+}
+
+/* Error Variants */
+.error-display--variant-error {
+  background-color: var(--color-error-light);
+  border-color: var(--color-error);
+  color: var(--color-error-dark);
+}
+
+.error-display--variant-warning {
+  background-color: var(--color-warning-light);
+  border-color: var(--color-warning);
+  color: var(--color-warning-dark);
+}
+
+.error-display--variant-info {
+  background-color: var(--color-info-light);
+  border-color: var(--color-info);
+  color: var(--color-info-dark);
+}
+
+/* Error Elements */
+.error-display__icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.error-display__content {
+  flex: 1;
+}
+
+.error-display__message {
+  font-size: var(--font-size-sm);
+  margin: 0;
+}
+
+.error-display__retry-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-all);
+}
+
+.error-display__retry-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* ===== PAGE ERROR ===== */
+.page-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  padding: var(--space-4);
+}
+
+.page-error__content {
+  text-align: center;
+  max-width: 400px;
+}
+
+.page-error__icon {
+  color: var(--color-error);
+  margin-bottom: var(--space-4);
+}
+
+.page-error__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.page-error__message {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-4) 0;
+}
+
+/* ===== IMAGE UPLOAD ===== */
+.image-upload {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.image-upload__label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+/* Upload Area */
+.image-upload__area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 200px;
+  padding: var(--space-6);
+  border: 2px dashed var(--border-medium);
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-surface);
+  cursor: pointer;
+  transition: var(--transition-all);
+}
+
+.image-upload__area:hover:not(.image-upload__area--disabled) {
+  border-color: var(--color-primary);
+  background-color: var(--bg-surface-hover);
+}
+
+.image-upload__area--drag-over {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-light);
+}
+
+.image-upload__area--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Upload Elements */
+.image-upload__icon {
+  color: var(--text-secondary);
+}
+
+.image-upload__text {
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.image-upload__text--small {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+/* Preview Grid */
+.image-upload__preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--space-3);
+}
+
+.image-upload__preview-item {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-surface-hover);
+}
+
+.image-upload__preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-upload__remove-button {
+  position: absolute;
+  top: var(--space-1);
+  right: var(--space-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-all);
+}
+
+.image-upload__remove-button:hover {
+  background-color: var(--color-error);
+}
+
+.image-upload__error-message {
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+  margin: 0;
+}
+
+/* ===== NOTIFICATION ===== */
+.notification {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background-color: white;
+  border: 1px solid;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Notification Variants */
+.notification--success {
+  border-color: var(--color-success);
+}
+
+.notification--error {
+  border-color: var(--color-error);
+}
+
+.notification--warning {
+  border-color: var(--color-warning);
+}
+
+.notification--info {
+  border-color: var(--color-info);
+}
+
+/* Notification Elements */
+.notification__icon {
+  flex-shrink: 0;
+}
+
+.notification--success .notification__icon {
+  color: var(--color-success);
+}
+
+.notification--error .notification__icon {
+  color: var(--color-error);
+}
+
+.notification--warning .notification__icon {
+  color: var(--color-warning);
+}
+
+.notification--info .notification__icon {
+  color: var(--color-info);
+}
+
+.notification__content {
+  flex: 1;
+}
+
+.notification__title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  margin: 0 0 var(--space-1) 0;
+}
+
+.notification__message {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.notification__close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-all);
+}
+
+.notification__close:hover {
+  color: var(--text-primary);
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-8) var(--space-4);
+  min-height: 300px;
+}
+
+.empty-state__icon {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.empty-state__title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.empty-state__description {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-4) 0;
+  max-width: 400px;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ===== Color Light Variants (추가 필요) ===== */
+:root {
+
+}
