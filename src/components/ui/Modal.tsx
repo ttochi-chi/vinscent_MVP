@@ -1,16 +1,3 @@
-/**
- * Modal 컴포넌트
- * 
- * 🔧 메소드 추적 기반 개선 완료:
- * - lucide-react 의존성 제거 (X 아이콘 → ✕ 문자)
- * - 중첩 모달 지원 추가
- * - compound component 패턴 적용
- * - 접근성 완벽 지원
- * 
- * 사용처: 팝업, 다이얼로그, 알림, 서랍(Drawer)
- * 근원지: MVP 필수 모달 기능 통합
- */
-
 import React, { useEffect, useRef, HTMLAttributes, useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -21,58 +8,25 @@ type ModalType = 'default' | 'alert' | 'image';
 
 // Modal Props
 interface ModalProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
-  /** 모달 열림 상태 */
   isOpen: boolean;
-  /** 모달 닫기 핸들러 */
   onClose: () => void;
-  /** 모달 크기 */
   size?: ModalSize;
-  /** 모달 위치 */
   position?: ModalPosition;
-  /** 모달 타입 */
   type?: ModalType;
-  /** 백드롭 클릭으로 닫기 허용 */
   closeOnBackdrop?: boolean;
-  /** ESC 키로 닫기 허용 */
   closeOnEsc?: boolean;
-  /** 닫기 버튼 숨기기 */
   hideCloseButton?: boolean;
-  /** 애니메이션 비활성화 */
   disableAnimation?: boolean;
-  /** 중첩 모달 여부 */
   nested?: boolean;
-  /** 모달 제목 (간편 사용) */
   title?: React.ReactNode;
-  /** 추가 클래스명 */
   className?: string;
-  /** 모달 내용 */
   children?: React.ReactNode;
 }
 
 // 모달 스택 관리
 let modalStack: string[] = [];
 
-/**
- * Modal 루트 컴포넌트
- * 
- * @example
- * // 기본 모달
- * <Modal isOpen={isOpen} onClose={handleClose} title="모달 제목">
- *   <Modal.Body>모달 내용</Modal.Body>
- *   <Modal.Footer>
- *     <Button onClick={handleClose}>닫기</Button>
- *   </Modal.Footer>
- * </Modal>
- * 
- * @example
- * // 중첩 모달
- * <Modal isOpen={isOpen} onClose={handleClose} nested>
- *   <Modal.Header>
- *     <Modal.Title>중첩 모달</Modal.Title>
- *   </Modal.Header>
- *   <Modal.Body>내용</Modal.Body>
- * </Modal>
- */
+
 const ModalRoot: React.FC<ModalProps> = ({
   isOpen,
   onClose,
@@ -349,170 +303,3 @@ const Modal = Object.assign(ModalRoot, {
 
 export default Modal;
 
-// ===== 사용 예시 =====
-export const ModalExamples = {
-  // 기본 모달
-  basic: () => {
-    const modal = useModal();
-    
-    return (
-      <>
-        <button onClick={modal.open} className="button">
-          모달 열기
-        </button>
-        
-        <Modal isOpen={modal.isOpen} onClose={modal.close} title="기본 모달">
-          <Modal.Body>
-            <p>모달 내용이 여기에 표시됩니다.</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <button onClick={modal.close} className="button button--variant-ghost">
-              취소
-            </button>
-            <button onClick={modal.close} className="button">
-              확인
-            </button>
-          </Modal.Footer>
-        </Modal>
-      </>
-    );
-  },
-
-  // Alert 모달
-  alert: () => {
-    const modal = useModal();
-    
-    return (
-      <>
-        <button onClick={modal.open} className="button button--variant-danger">
-          삭제
-        </button>
-        
-        <Modal 
-          isOpen={modal.isOpen} 
-          onClose={modal.close} 
-          size="sm" 
-          type="alert"
-        >
-          <Modal.Header>
-            <Modal.Title>정말 삭제하시겠습니까?</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <p>이 작업은 되돌릴 수 없습니다.</p>
-          </Modal.Body>
-          <Modal.Footer align="center">
-            <button onClick={modal.close} className="button button--variant-ghost">
-              취소
-            </button>
-            <button onClick={modal.close} className="button button--variant-danger">
-              삭제
-            </button>
-          </Modal.Footer>
-        </Modal>
-      </>
-    );
-  },
-
-  // 중첩 모달
-  nested: () => {
-    const parentModal = useModal();
-    const childModal = useModal();
-    
-    return (
-      <>
-        <button onClick={parentModal.open} className="button">
-          첫 번째 모달 열기
-        </button>
-        
-        <Modal isOpen={parentModal.isOpen} onClose={parentModal.close} title="부모 모달">
-          <Modal.Body>
-            <p>이것은 부모 모달입니다.</p>
-            <button onClick={childModal.open} className="button button--size-sm">
-              중첩 모달 열기
-            </button>
-          </Modal.Body>
-        </Modal>
-        
-        <Modal 
-          isOpen={childModal.isOpen} 
-          onClose={childModal.close} 
-          title="중첩 모달"
-          nested
-          size="sm"
-        >
-          <Modal.Body>
-            <p>이것은 중첩된 자식 모달입니다.</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <button onClick={childModal.close} className="button button--size-sm">
-              닫기
-            </button>
-          </Modal.Footer>
-        </Modal>
-      </>
-    );
-  },
-
-  // Drawer (사이드 모달)
-  drawer: () => {
-    const modal = useModal();
-    
-    return (
-      <>
-        <button onClick={modal.open} className="button">
-          메뉴 열기
-        </button>
-        
-        <Modal 
-          isOpen={modal.isOpen} 
-          onClose={modal.close} 
-          position="left"
-          hideCloseButton
-        >
-          <Modal.Header>
-            <Modal.Title>메뉴</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <nav>
-              <a href="/" className="block py-2">홈</a>
-              <a href="/products" className="block py-2">제품</a>
-              <a href="/magazines" className="block py-2">매거진</a>
-              <a href="/brands" className="block py-2">브랜드</a>
-            </nav>
-          </Modal.Body>
-        </Modal>
-      </>
-    );
-  },
-
-  // 이미지 모달
-  image: () => {
-    const modal = useModal();
-    
-    return (
-      <>
-        <img 
-          src="/images/product-thumb.jpg" 
-          alt="제품 썸네일"
-          onClick={modal.open}
-          className="cursor-pointer"
-        />
-        
-        <Modal 
-          isOpen={modal.isOpen} 
-          onClose={modal.close}
-          type="image"
-          size="xl"
-        >
-          <Modal.Body noPadding>
-            <img 
-              src="/images/product-full.jpg" 
-              alt="제품 전체 이미지"
-              className="w-full"
-            />
-          </Modal.Body>
-        </Modal>
-      </>
-    );
-  }
-};

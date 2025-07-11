@@ -2,14 +2,6 @@ export { default as Button } from './ui/Button';
 export { default as Input } from './ui/Input';
 export { default as Card } from './ui/Card';
 export { default as Modal} from './ui/Modal';
-export { 
-  Loading, 
-  PageLoading, 
-  CardSkeleton, 
-  ErrorDisplay, 
-  PageError, 
-  ImageUpload 
-} from './ui/utilities';
 
 // 레이아웃 컴포넌트
 export { default as Header } from './layout/Header';

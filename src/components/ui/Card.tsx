@@ -1,16 +1,3 @@
-/**
- * Card 컴포넌트
- * 
- * 🔧 메소드 추적 기반 개선 완료:
- * - lucide-react 의존성 제거
- * - 링크 카드 지원 추가
- * - compound component 패턴 적용
- * - 제품/매거진 특화 서브 컴포넌트 포함
- * 
- * 사용처: 콘텐츠 그룹화, 제품 표시, 매거진 표시
- * 근원지: MVP에 필요한 카드 레이아웃 통합
- */
-
 import React, { HTMLAttributes, AnchorHTMLAttributes, forwardRef } from 'react';
 
 // ===== 타입 정의 =====
@@ -21,61 +8,30 @@ type CardElement = HTMLDivElement | HTMLAnchorElement;
 
 // 공통 Props
 interface BaseCardProps {
-  /** 카드 크기 */
   size?: CardSize;
-  /** 카드 스타일 변형 */
   variant?: CardVariant;
-  /** 카드 타입 */
   type?: CardType;
-  /** 클릭 가능 여부 */
   clickable?: boolean;
-  /** 가로형 레이아웃 */
   horizontal?: boolean;
-  /** 선택된 상태 */
   selected?: boolean;
-  /** 로딩 상태 */
   loading?: boolean;
-  /** 추가 클래스명 */
   className?: string;
-  /** 카드 내용 */
   children?: React.ReactNode;
 }
 
 // Div Card Props
 interface DivCardProps extends BaseCardProps, Omit<HTMLAttributes<HTMLDivElement>, 'className'> {
-  /** 렌더링할 요소 타입 */
   as?: 'div';
 }
 
 // Link Card Props
 interface LinkCardProps extends BaseCardProps, Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'className' | 'type'> {
-  /** 렌더링할 요소 타입 */
   as: 'a';
-  /** 링크 주소 */
   href: string;
 }
 
 type CardPropsWithAs = DivCardProps | LinkCardProps;
 
-/**
- * Card 루트 컴포넌트
- * 
- * @example
- * // 기본 카드
- * <Card>
- *   <Card.Header>
- *     <Card.Title>제목</Card.Title>
- *   </Card.Header>
- *   <Card.Content>내용</Card.Content>
- * </Card>
- * 
- * @example
- * // 링크 카드
- * <Card as="a" href="/products/1" clickable>
- *   <Card.Media src="/image.jpg" alt="이미지" />
- *   <Card.Content>내용</Card.Content>
- * </Card>
- */
 const CardRoot = forwardRef<CardElement, CardPropsWithAs>(
   (props, ref) => {
     const {
@@ -363,110 +319,3 @@ const Card = Object.assign(CardRoot, {
 });
 
 export default Card;
-
-// ===== 사용 예시 =====
-export const CardExamples = {
-  // 기본 카드
-  basic: () => (
-    <Card>
-      <Card.Header>
-        <Card.Title>카드 제목</Card.Title>
-        <Card.Subtitle>카드 부제목</Card.Subtitle>
-      </Card.Header>
-      <Card.Content>
-        카드 내용이 들어갑니다. 다양한 정보를 표시할 수 있습니다.
-      </Card.Content>
-    </Card>
-  ),
-
-  // 이미지 카드
-  withMedia: () => (
-    <Card>
-      <Card.Media src="/images/sample.jpg" alt="샘플 이미지" />
-      <Card.Content>
-        <Card.Title>이미지가 있는 카드</Card.Title>
-        <p>이미지와 함께 내용을 표시합니다.</p>
-      </Card.Content>
-    </Card>
-  ),
-
-  // 클릭 가능한 링크 카드
-  clickable: () => (
-    <Card as="a" href="/products/1" clickable>
-      <Card.Media src="/images/product.jpg" alt="제품" />
-      <Card.Content>
-        <Card.Title>클릭 가능한 카드</Card.Title>
-        <p>전체 카드가 링크로 작동합니다.</p>
-      </Card.Content>
-    </Card>
-  ),
-
-  // 제품 카드
-  product: () => (
-    <Card type="product">
-      <Card.Badge>SALE</Card.Badge>
-      <Card.Media src="/images/perfume.jpg" alt="향수" />
-      <Card.Content>
-        <Card.Title>Black Orchid</Card.Title>
-        <Card.Subtitle>Tom Ford</Card.Subtitle>
-        <Card.Price price={180000} originalPrice={250000} discount={28} />
-      </Card.Content>
-    </Card>
-  ),
-
-  // 매거진 카드
-  magazine: () => (
-    <Card type="magazine" as="a" href="/magazines/1" clickable>
-      <Card.Media src="/images/magazine.jpg" alt="매거진" />
-      <Card.Content>
-        <Card.Title>2024 향수 트렌드</Card.Title>
-        <p>올해 주목해야 할 향수 트렌드를 소개합니다.</p>
-        <Card.Author 
-          name="홍길동" 
-          avatar="/images/avatar.jpg"
-          date="2024.12.20"
-        />
-      </Card.Content>
-    </Card>
-  ),
-
-  // 가로형 카드
-  horizontal: () => (
-    <Card horizontal>
-      <Card.Media src="/images/brand.jpg" alt="브랜드" />
-      <Card.Content>
-        <Card.Title>가로형 레이아웃</Card.Title>
-        <p>이미지와 콘텐츠가 나란히 배치됩니다.</p>
-        <Card.Actions align="end">
-          <button className="button button--size-sm">자세히 보기</button>
-        </Card.Actions>
-      </Card.Content>
-    </Card>
-  ),
-
-  // 카드 그리드
-  grid: () => (
-    <Card.Grid columns={3}>
-      <Card>
-        <Card.Content>카드 1</Card.Content>
-      </Card>
-      <Card>
-        <Card.Content>카드 2</Card.Content>
-      </Card>
-      <Card>
-        <Card.Content>카드 3</Card.Content>
-      </Card>
-    </Card.Grid>
-  ),
-
-  // 로딩 상태
-  loading: () => (
-    <Card loading>
-      <div className="skeleton skeleton-image" />
-      <Card.Content>
-        <div className="skeleton skeleton-text" />
-        <div className="skeleton skeleton-text skeleton-text--short" />
-      </Card.Content>
-    </Card>
-  )
-};
