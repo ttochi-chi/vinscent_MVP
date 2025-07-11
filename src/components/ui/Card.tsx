@@ -5,7 +5,6 @@ type CardSize = 'sm' | 'md' | 'lg';
 type CardVariant = 'elevated' | 'outlined' | 'filled';
 type CardType = 'default' | 'product' | 'magazine';
 type CardElement = HTMLDivElement | HTMLAnchorElement;
-
 // 공통 Props
 interface BaseCardProps {
   size?: CardSize;
@@ -226,7 +225,7 @@ const CardBadge: React.FC<CardBadgeProps> = ({
 interface ProductPriceProps extends HTMLAttributes<HTMLDivElement> {
   price: number;
   originalPrice?: number;
-  discount?: number;
+  discount?: number | null;
   currency?: string;
 }
 
@@ -247,7 +246,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     <span>
       {price.toLocaleString()}{currency}
     </span>
-    {discount && (
+    {discount && discount > 0 && (
       <span className="card__discount">
         {discount}% OFF
       </span>

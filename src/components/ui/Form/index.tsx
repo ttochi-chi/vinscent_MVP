@@ -1,16 +1,3 @@
-/**
- * Form 컴포넌트 모음
- * 
- * 🔧 메소드 추적 기반 개선 완료:
- * - utilities.tsx의 유용한 기능 통합
- * - react-hook-form 통합 지원
- * - compound component 패턴 강화
- * - Loading, Error, ImageUpload 컴포넌트 포함
- * 
- * 사용처: 모든 폼 관련 UI 및 유틸리티
- * 근원지: Form과 utilities 통합으로 중복 제거
- */
-
 import React, { 
   InputHTMLAttributes, 
   TextareaHTMLAttributes, 
@@ -24,9 +11,7 @@ import React, {
 
 // ===== Form Container =====
 interface FormProps extends HTMLAttributes<HTMLFormElement> {
-  /** 인라인 폼 여부 */
   inline?: boolean;
-  /** 추가 클래스명 */
   className?: string;
   children?: React.ReactNode;
 }
@@ -47,9 +32,7 @@ const FormRoot: React.FC<FormProps> = ({
 
 // ===== Form Group =====
 interface FormGroupProps extends HTMLAttributes<HTMLDivElement> {
-  /** 가로 레이아웃 */
   horizontal?: boolean;
-  /** 추가 클래스명 */
   className?: string;
   children?: React.ReactNode;
 }
@@ -70,9 +53,7 @@ const FormGroup: React.FC<FormGroupProps> = ({
 
 // ===== Label =====
 interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
-  /** 필수 필드 표시 */
   required?: boolean;
-  /** 추가 클래스명 */
   className?: string;
   children?: React.ReactNode;
 }
@@ -93,15 +74,10 @@ const Label: React.FC<LabelProps> = ({
 
 // ===== Input =====
 interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
-  /** 입력 필드 크기 */
   fieldSize?: 'sm' | 'md' | 'lg';
-  /** 입력 필드 스타일 */
   variant?: 'outlined' | 'filled';
-  /** 에러 상태 */
   error?: boolean;
-  /** 전체 너비 */
   fullWidth?: boolean;
-  /** 추가 클래스명 */
   className?: string;
 }
 
@@ -142,17 +118,11 @@ Input.displayName = 'Input';
 
 // ===== Textarea =====
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  /** 크기 */
   fieldSize?: 'sm' | 'md' | 'lg';
-  /** 스타일 변형 */
   variant?: 'outlined' | 'filled';
-  /** 에러 상태 */
   error?: boolean;
-  /** 크기 조절 비활성화 */
   noResize?: boolean;
-  /** 전체 너비 */
   fullWidth?: boolean;
-  /** 추가 클래스명 */
   className?: string;
 }
 
@@ -195,15 +165,10 @@ Textarea.displayName = 'Textarea';
 
 // ===== Select =====
 interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
-  /** 크기 */
   fieldSize?: 'sm' | 'md' | 'lg';
-  /** 스타일 변형 */
   variant?: 'outlined' | 'filled';
-  /** 에러 상태 */
   error?: boolean;
-  /** 전체 너비 */
   fullWidth?: boolean;
-  /** 추가 클래스명 */
   className?: string;
   children?: React.ReactNode;
 }
@@ -247,9 +212,7 @@ Select.displayName = 'Select';
 
 // ===== Checkbox =====
 interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  /** 레이블 텍스트 */
   label?: string;
-  /** 추가 클래스명 */
   className?: string;
 }
 
@@ -279,9 +242,7 @@ Checkbox.displayName = 'Checkbox';
 
 // ===== Radio =====
 interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  /** 레이블 텍스트 */
   label?: string;
-  /** 추가 클래스명 */
   className?: string;
 }
 
@@ -311,7 +272,6 @@ Radio.displayName = 'Radio';
 
 // ===== Form Help & Error =====
 interface FormHelpProps extends HTMLAttributes<HTMLParagraphElement> {
-  /** 추가 클래스명 */
   className?: string;
   children?: React.ReactNode;
 }
@@ -327,7 +287,6 @@ const FormHelp: React.FC<FormHelpProps> = ({
 );
 
 interface FormErrorProps extends HTMLAttributes<HTMLParagraphElement> {
-  /** 추가 클래스명 */
   className?: string;
   children?: React.ReactNode;
 }
@@ -344,9 +303,7 @@ const FormError: React.FC<FormErrorProps> = ({
 
 // ===== Form Actions =====
 interface FormActionsProps extends HTMLAttributes<HTMLDivElement> {
-  /** 정렬 */
   align?: 'start' | 'end' | 'center' | 'between';
-  /** 추가 클래스명 */
   className?: string;
   children?: React.ReactNode;
 }
@@ -367,13 +324,9 @@ const FormActions: React.FC<FormActionsProps> = ({
 
 // ===== Loading Component (from utilities) =====
 interface LoadingProps {
-  /** 로딩 타입 */
   variant?: 'spinner' | 'skeleton' | 'pulse' | 'dots';
-  /** 크기 */
   size?: 'sm' | 'md' | 'lg';
-  /** 로딩 메시지 */
   message?: string;
-  /** 추가 CSS 클래스 */
   className?: string;
 }
 
@@ -432,23 +385,14 @@ const Loading: React.FC<LoadingProps> = ({
 
 // ===== Image Upload Component =====
 interface ImageUploadProps {
-  /** 현재 이미지 URL 배열 */
   value?: string[];
-  /** 이미지 변경 핸들러 */
   onChange?: (urls: string[]) => void;
-  /** 최대 이미지 개수 */
   maxImages?: number;
-  /** 단일 이미지 모드 */
   single?: boolean;
-  /** 라벨 */
   label?: string;
-  /** 에러 메시지 */
   error?: string;
-  /** 비활성화 */
   disabled?: boolean;
-  /** 허용 파일 형식 */
   accept?: string;
-  /** 최대 파일 크기 (MB) */
   maxSizeMB?: number;
 }
 
@@ -644,72 +588,3 @@ export default Form;
 //   useModal
 // } from '../Modal'; // Modal의 useModal hook re-export
 
-// ===== React Hook Form 통합 예시 =====
-export const FormExamples = {
-  // 기본 폼
-  basic: () => (
-    <Form onSubmit={(e) => { e.preventDefault(); console.log('제출됨'); }}>
-      <Form.Group>
-        <Form.Label htmlFor="name" required>이름</Form.Label>
-        <Form.Input id="name" name="name" required />
-      </Form.Group>
-      
-      <Form.Group>
-        <Form.Label htmlFor="email">이메일</Form.Label>
-        <Form.Input id="email" name="email" type="email" />
-        <Form.Help>이메일 형식으로 입력해주세요.</Form.Help>
-      </Form.Group>
-      
-      <Form.Actions align="end">
-        <button type="button" className="button button--variant-ghost">
-          취소
-        </button>
-        <button type="submit" className="button">
-          저장
-        </button>
-      </Form.Actions>
-    </Form>
-  ),
-
-  // 이미지 업로드 폼
-  imageForm: () => {
-    const [images, setImages] = useState<string[]>([]);
-    
-    return (
-      <Form>
-        <Form.Group>
-          <Form.ImageUpload
-            label="제품 이미지"
-            value={images}
-            onChange={setImages}
-            maxImages={3}
-          />
-        </Form.Group>
-        
-        <Form.Actions align="end">
-          <button type="submit" className="button">
-            업로드
-          </button>
-        </Form.Actions>
-      </Form>
-    );
-  },
-
-  // 로딩 상태
-  loadingForm: () => (
-    <Form>
-      <Form.Loading variant="spinner" size="lg" message="데이터를 불러오는 중..." />
-    </Form>
-  ),
-
-  // 에러 처리
-  errorForm: () => (
-    <Form>
-      <Form.Group>
-        <Form.Label htmlFor="username">사용자명</Form.Label>
-        <Form.Input id="username" name="username" error />
-        <Form.Error>이미 사용 중인 사용자명입니다.</Form.Error>
-      </Form.Group>
-    </Form>
-  )
-};
