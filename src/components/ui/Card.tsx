@@ -48,7 +48,7 @@ interface DivCardProps extends BaseCardProps, Omit<HTMLAttributes<HTMLDivElement
 }
 
 // Link Card Props
-interface LinkCardProps extends BaseCardProps, Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'className'> {
+interface LinkCardProps extends BaseCardProps, Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'className' | 'type'> {
   /** 렌더링할 요소 타입 */
   as: 'a';
   /** 링크 주소 */
@@ -114,7 +114,7 @@ const CardRoot = forwardRef<CardElement, CardPropsWithAs>(
 
     // Div Card 렌더링
     if (Component === 'div') {
-      const { href, ...divProps } = restProps as DivCardProps;
+      const { ...divProps } = restProps as DivCardProps;
       return (
         <div
           ref={ref as React.Ref<HTMLDivElement>}

@@ -11,7 +11,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const magazineId = parseInt(id);
     
     if (isNaN(magazineId)) {
@@ -51,7 +51,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const magazineId = parseInt(id);
     
     if (isNaN(magazineId)) {
@@ -101,7 +101,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
     console.log('DELETE Magazine 요청 받음, ID:', id);
     
     const magazineId = parseInt(id);

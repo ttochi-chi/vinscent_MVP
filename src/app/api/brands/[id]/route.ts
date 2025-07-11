@@ -11,7 +11,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const brandId = parseInt(id);
     
     if (isNaN(brandId)) {
@@ -50,7 +50,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
     console.log('DELETE 요청 받음, ID:', id);
     
     const brandId = parseInt(id);
@@ -92,7 +92,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const brandId = parseInt(id);
     
     if (isNaN(brandId)) {

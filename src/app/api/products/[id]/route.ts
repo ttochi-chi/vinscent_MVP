@@ -11,7 +11,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
     console.log('Product GET by ID 요청 받음, ID:', id);
     
     const productId = parseInt(id);
@@ -54,7 +54,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const body = await request.json();
     console.log('Product PUT 요청 받음, ID:', id, 'Body:', body);
     
@@ -112,7 +112,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
     console.log('Product DELETE 요청 받음, ID:', id);
     
     const productId = parseInt(id);
