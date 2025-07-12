@@ -20,7 +20,7 @@
   --button-font-size-xl: var(--font-size-xl);
   
   --button-font-weight: var(--font-weight-medium);
-  --button-border-radius: var(--radius-md);
+  --button-border-radius: var(--radius-none);
   --button-border-width: 2px;
   
   /* ===== Card ===== */
@@ -32,7 +32,7 @@
   --card-gap-md: var(--space-3);
   --card-gap-lg: var(--space-4);
   
-  --card-border-radius: var(--radius-lg);
+  --card-border-radius: var(--radius-none);
   --card-border-width: 1px;
   --card-shadow: var(--shadow-sm);
   --card-shadow-hover: var(--shadow-md);
@@ -50,7 +50,7 @@
   --input-font-size-lg: var(--font-size-lg);
   
   --input-border-width: 1px;
-  --input-border-radius: var(--radius-md);
+  --input-border-radius: var(--radius-none);
   --input-focus-ring-width: 2px;
   --input-focus-ring-offset: 2px;
   

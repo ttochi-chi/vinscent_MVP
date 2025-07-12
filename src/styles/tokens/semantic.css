@@ -51,6 +51,8 @@
   --color-info: var(--color-gray-500);
   --color-info-hover: var(--color-gray-600);
   --color-info-light: var(--color-white);
+
+  --color-card-hover: var(--color-gray-800);
   
   /* ===== Layout Spacing ===== */
   --space-page-padding: var(--space-4);
